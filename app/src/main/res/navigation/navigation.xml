@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/decksFragment">
+
+    <fragment
+        android:id="@+id/decksFragment"
+        android:name="com.ks.langapp.ui.decks.DecksFragment"
+        android:label="DecksFragment" >
+        <action
+            android:id="@+id/action_decksFragment_to_editDeckFragment"
+            app:destination="@id/editDeckFragment" />
+        <action
+            android:id="@+id/action_decksFragment_to_cardsFragment"
+            app:destination="@id/cardsFragment" />
+        <action
+            android:id="@+id/action_decksFragment_to_importFragment"
+            app:destination="@id/importFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editDeckFragment"
+        android:name="com.ks.langapp.ui.editdeck.EditDeckFragment"
+        android:label="EditDeckFragment" >
+        <argument
+            android:name="deckId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_editDeckFragment_to_decksFragment"
+            app:destination="@id/decksFragment"
+            app:popUpTo="@id/decksFragment"
+            app:popUpToInclusive="true" />
+
+        <fragment
+            android:id="@+id/entriesFragment"
+            android:name="com.ks.langapp.ui.cards.CardsFragment"
+            android:label="EntriesFragment"
+            tools:layout="@layout/fragment_entries">
+            <action
+                android:id="@+id/action_entriesFragment_to_editEntryFragment"
+                app:destination="@id/editEntryFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/editEntryFragment"
+            android:name="com.ks.langapp.ui.editcard.EditCardFragment"
+            android:label="EditEntryFragment"
+            tools:layout="@layout/fragment_edit_entry" >
+            <argument
+                android:name="entryId"
+                app:argType="long" />
+            <action
+                android:id="@+id/action_editEntryFragment_to_entriesFragment"
+                app:destination="@id/entriesFragment" />
+        </fragment>
+
+    </fragment>
+    <fragment
+        android:id="@+id/cardsFragment"
+        android:name="com.ks.langapp.ui.cards.CardsFragment"
+        android:label="CardsFragment" >
+        <argument android:name="deckId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_cardsFragment_to_editCardFragment"
+            app:destination="@id/editCardFragment" />
+        <action
+            android:id="@+id/action_cardsFragment_to_flashcardFragment"
+            app:destination="@id/flashcardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCardFragment"
+        android:name="com.ks.langapp.ui.editcard.EditCardFragment"
+        android:label="EditCardFragment" >
+        <argument
+            android:name="deckId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_editCardFragment_to_cardsFragment"
+            app:destination="@id/cardsFragment"
+            app:popUpTo="@id/cardsFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="cardId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/flashcardFragment"
+        android:name="com.ks.langapp.ui.flashcard.FlashcardFragment"
+        android:label="FlashcardFragment" >
+        <argument
+            android:name="deckId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/importFragment"
+        android:name="com.ks.langapp.ui.importcards.ImportFragment"
+        android:label="ImportFragment" />
+
+</navigation>
