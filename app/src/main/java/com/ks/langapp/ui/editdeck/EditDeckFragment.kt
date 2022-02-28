@@ -40,7 +40,7 @@ class EditDeckFragment : Fragment() {
                 else viewModel.onUpdateDeck(binding.name.text.toString())
                 navigateBack()
             } else
-                Toast.makeText(context, "Wpisz wartości", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
 
         }
 

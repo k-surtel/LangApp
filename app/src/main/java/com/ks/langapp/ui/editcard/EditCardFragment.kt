@@ -35,17 +35,15 @@ class EditCardFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.saveButton.setOnClickListener{
-            if(binding.deckName.text.isNotBlank() && binding.description.text.isNotBlank()) {
+            if(!binding.deckName.text.isNullOrBlank() && !binding.description.text.isNullOrBlank()) {
                 if(arguments.cardId == Long.MIN_VALUE)
-                    viewModel.onSaveCard(arguments.deckId,
-                        binding.deckName.text.toString(),
-                        binding.description.text.toString())
+                    viewModel.onSaveCard(arguments.deckId, binding.deckName.text.toString(), binding.description.text.toString())
                 else
                     viewModel.onUpdateCard(binding.deckName.text.toString(), binding.description.text.toString())
 
                 navigateBack(arguments.deckId)
             } else
-                Toast.makeText(context, "Wpisz wartości", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
 
         }
 

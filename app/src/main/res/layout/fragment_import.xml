@@ -17,7 +17,7 @@
 
         <Button
             android:id="@+id/button_import_text_file"
-            android:text="Import from text"
+            android:text="@string/import_txt_file"
             android:onClick="@{() -> viewModel.importTextFile()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

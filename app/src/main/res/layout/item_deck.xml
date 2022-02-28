@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> clickListener.onClick(1, deck)}"
-                android:text="Edit"
+                android:text="@string/edit"
                 app:cornerRadius="@dimen/card_corner_radius"
                 android:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"

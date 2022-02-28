@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">LangApp</string>
+    <string name="form_incomplete">Please fill all required fields</string>
+    <string name="revise">Revise</string>
+    <string name="import_">Import</string>
+    <string name="deck_name">Deck name</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="wrong">Wrong</string>
+    <string name="right">Right</string>
+    <string name="edit">Edit</string>
+    <string name="import_txt_file">Import TXT file</string>
+    <string name="front">Front</string>
+    <string name="back">Back</string>
 </resources>
