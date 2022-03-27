@@ -8,7 +8,7 @@
             type="com.ks.langapp.database.entities.Deck" />
         <variable
             name="clickListener"
-            type="com.ks.langapp.ui.decks.DecksListener" />
+            type="com.ks.langapp.ui.adapters.DecksListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

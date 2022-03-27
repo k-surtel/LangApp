@@ -1,4 +1,4 @@
-package com.ks.langapp.ui.decks
+package com.ks.langapp.ui.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

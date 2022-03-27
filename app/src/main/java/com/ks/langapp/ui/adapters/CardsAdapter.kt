@@ -1,4 +1,4 @@
-package com.ks.langapp.ui.cards
+package com.ks.langapp.ui.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import com.ks.langapp.database.entities.Card
 import com.ks.langapp.databinding.ItemCardBinding
 
 class CardsAdapter(private val clickListener: CardsListener) :
-    ListAdapter<Card, CardsAdapter.ViewHolder>(EntriesDiffCallback()) {
+    ListAdapter<Card, CardsAdapter.ViewHolder>(ItemsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -37,9 +37,12 @@ class CardsAdapter(private val clickListener: CardsListener) :
             }
         }
     }
+
+
+
 }
 
-class EntriesDiffCallback : DiffUtil.ItemCallback<Card>() {
+class ItemsDiffCallback : DiffUtil.ItemCallback<Card>() {
     override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean {
         return oldItem.cardId == newItem.cardId
     }

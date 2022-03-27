@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.ks.langapp.R
 import com.ks.langapp.database.LangDatabase
 import com.ks.langapp.databinding.FragmentCardsBinding
+import com.ks.langapp.ui.adapters.CardsAdapter
+import com.ks.langapp.ui.adapters.CardsListener
 import com.ks.langapp.ui.utils.navigate
 import com.ks.langapp.ui.editdeck.EditDeckFragmentArgs
 
