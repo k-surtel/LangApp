@@ -40,11 +40,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/edit_button"
+                android:id="@+id/review_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> clickListener.onClick(1, deck)}"
-                android:text="@string/edit"
+                android:text="@string/learn"
                 app:cornerRadius="@dimen/card_corner_radius"
                 android:elevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -1,4 +1,4 @@
-package com.ks.langapp.ui.cards
+package com.ks.langapp.ui.deck
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,17 +7,19 @@ import androidx.lifecycle.MutableLiveData
 import com.ks.langapp.database.LangDatabaseDao
 import com.ks.langapp.database.entities.Card
 
-class CardsViewModel(val database: LangDatabaseDao, application: Application) : AndroidViewModel(application) {
+class DeckViewModel(val database: LangDatabaseDao, application: Application) : AndroidViewModel(application) {
 
     private val _navigateToEditCard = MutableLiveData<Card?>()
     val navigateToEditCard: LiveData<Card?> get() = _navigateToEditCard
     private val _navigateToFlashcards = MutableLiveData<Boolean>()
     val navigateToFlashcards: LiveData<Boolean> get() = _navigateToFlashcards
 
+    var deckId: Long? = null
     lateinit var cards: LiveData<List<Card>>
 
 
     fun processArguments(deckId: Long) {
+        this.deckId = deckId
         cards = database.getCardsOfDeck(deckId)
     }
 

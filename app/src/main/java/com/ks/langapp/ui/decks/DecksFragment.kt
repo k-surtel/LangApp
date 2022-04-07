@@ -3,10 +3,12 @@ package com.ks.langapp.ui.decks
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ks.langapp.R
 import com.ks.langapp.database.LangDatabase
 import com.ks.langapp.databinding.FragmentDecksBinding
@@ -28,13 +30,15 @@ class DecksFragment : Fragment() {
         val viewModelFactory = DecksViewModelFactory(dataSource, application)
         val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[DecksViewModel::class.java]
 
+        setHasOptionsMenu(true)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         val adapter = DecksAdapter(DecksListener { itemClicked, deckId ->
             when(itemClicked) {
                 0 -> viewModel.onDeckClick(deckId)
-                1 -> viewModel.onEditButtonClick(deckId)
+                1 -> viewModel.onReviewButtonClick(deckId)
             }
         })
         viewModel.decks.observe(viewLifecycleOwner) { it?.let { adapter.submitList(it) } }
@@ -43,8 +47,8 @@ class DecksFragment : Fragment() {
         viewModel.navigateToCards.observe(viewLifecycleOwner) { deckId ->
             deckId?.let {
                 if (deckId != Long.MIN_VALUE) {
-                    navigate(DecksFragmentDirections.actionDecksFragmentToCardsFragment(deckId))
-                    viewModel.onCardsListNavigated()
+                    navigate(DecksFragmentDirections.actionDecksFragmentToDeckFragment(deckId))
+                    viewModel.onDeckNavigated()
                 }
             }
         }
@@ -52,23 +56,24 @@ class DecksFragment : Fragment() {
         viewModel.navigateToEditDeck.observe(viewLifecycleOwner) { deckId ->
             deckId?.let {
                 if (deckId != Long.MIN_VALUE) {
-                    navigate(DecksFragmentDirections.actionDecksFragmentToEditDeckFragment(deckId))
-                    viewModel.onEditDeckNavigated()
+                    navigate(DecksFragmentDirections.actionDecksFragmentToFlashcardFragment(deckId))
+                    viewModel.onReviewNavigated()
                 }
             }
         }
 
-        viewModel.navigateToImport.observe(viewLifecycleOwner) { ifNavigate ->
-            if (ifNavigate) {
-                navigate(DecksFragmentDirections.actionDecksFragmentToImportFragment())
-                viewModel.onImportNavigated()
-            }
-        }
-
-        binding.fab.setOnClickListener{
-            navigate(DecksFragmentDirections.actionDecksFragmentToEditDeckFragment(Long.MIN_VALUE))
-        }
-
         return binding.root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_add -> {
+            navigate(DecksFragmentDirections.actionDecksFragmentToEditDeckFragment(Long.MIN_VALUE))
+            true
+        }
+        R.id.action_import -> {
+            navigate(DecksFragmentDirections.actionDecksFragmentToImportFragment())
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }

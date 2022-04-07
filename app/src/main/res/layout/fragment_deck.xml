@@ -8,13 +8,13 @@
 
         <variable
             name="viewModel"
-            type="com.ks.langapp.ui.cards.CardsViewModel" />
+            type="com.ks.langapp.ui.deck.DeckViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.cards.CardsFragment">
+        tools:context=".ui.deck.DeckFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cards"
@@ -27,24 +27,13 @@
 
         <Button
             android:id="@+id/button_revise"
-            android:text="@string/revise"
+            android:text="@string/learn"
             android:onClick="@{() -> viewModel.onReviseButtonClick()}"
             setVisibility="@{viewModel.cards.size() != 0}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:src="@android:drawable/ic_input_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

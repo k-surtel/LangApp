@@ -10,14 +10,17 @@
         android:name="com.ks.langapp.ui.decks.DecksFragment"
         android:label="DecksFragment" >
         <action
-            android:id="@+id/action_decksFragment_to_editDeckFragment"
-            app:destination="@id/editDeckFragment" />
-        <action
-            android:id="@+id/action_decksFragment_to_cardsFragment"
-            app:destination="@id/cardsFragment" />
+            android:id="@+id/action_decksFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
         <action
             android:id="@+id/action_decksFragment_to_importFragment"
             app:destination="@id/importFragment" />
+        <action
+            android:id="@+id/action_decksFragment_to_flashcardFragment"
+            app:destination="@id/flashcardFragment" />
+        <action
+            android:id="@+id/action_decksFragment_to_editDeckFragment"
+            app:destination="@id/editDeckFragment" />
     </fragment>
 
     <fragment
@@ -27,15 +30,10 @@
         <argument
             android:name="deckId"
             app:argType="long" />
-        <action
-            android:id="@+id/action_editDeckFragment_to_decksFragment"
-            app:destination="@id/decksFragment"
-            app:popUpTo="@id/decksFragment"
-            app:popUpToInclusive="true" />
 
         <fragment
             android:id="@+id/entriesFragment"
-            android:name="com.ks.langapp.ui.cards.CardsFragment"
+            android:name="com.ks.langapp.ui.deck.DeckFragment"
             android:label="EntriesFragment"
             tools:layout="@layout/fragment_entries">
             <action
@@ -58,17 +56,20 @@
 
     </fragment>
     <fragment
-        android:id="@+id/cardsFragment"
-        android:name="com.ks.langapp.ui.cards.CardsFragment"
-        android:label="CardsFragment" >
+        android:id="@+id/deckFragment"
+        android:name="com.ks.langapp.ui.deck.DeckFragment"
+        android:label="DeckFragment" >
         <argument android:name="deckId"
             app:argType="long" />
         <action
-            android:id="@+id/action_cardsFragment_to_editCardFragment"
+            android:id="@+id/action_deckFragment_to_editCardFragment"
             app:destination="@id/editCardFragment" />
         <action
-            android:id="@+id/action_cardsFragment_to_flashcardFragment"
+            android:id="@+id/action_deckFragment_to_flashcardFragment"
             app:destination="@id/flashcardFragment" />
+        <action
+            android:id="@+id/action_deckFragment_to_editDeckFragment"
+            app:destination="@id/editDeckFragment" />
     </fragment>
     <fragment
         android:id="@+id/editCardFragment"
@@ -79,8 +80,8 @@
             app:argType="long" />
         <action
             android:id="@+id/action_editCardFragment_to_cardsFragment"
-            app:destination="@id/cardsFragment"
-            app:popUpTo="@id/cardsFragment"
+            app:destination="@id/deckFragment"
+            app:popUpTo="@id/deckFragment"
             app:popUpToInclusive="true" />
         <argument
             android:name="cardId"

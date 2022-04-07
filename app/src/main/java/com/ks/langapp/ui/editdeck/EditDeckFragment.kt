@@ -38,7 +38,7 @@ class EditDeckFragment : Fragment() {
             if(binding.name.text.isNotBlank()) {
                 if(arguments.deckId == Long.MIN_VALUE) viewModel.onSaveDeck(binding.name.text.toString())
                 else viewModel.onUpdateDeck(binding.name.text.toString())
-                navigateBack()
+                //navigateBack()
             } else
                 Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
 
@@ -47,14 +47,14 @@ class EditDeckFragment : Fragment() {
         viewModel.navigateBack.observe(viewLifecycleOwner) {
             if(it) {
                 viewModel.onNavigateBackCalled()
-                navigateBack()
+                //navigateBack()
             }
         }
 
         return binding.root
     }
 
-    private fun navigateBack() {
-        navigate(EditDeckFragmentDirections.actionEditDeckFragmentToDecksFragment())
-    }
+//    private fun navigateBack() {
+//        navigate(EditDeckFragmentDirections.actionEditDeckFragmentToDecksFragment())
+//    }
 }
