@@ -49,6 +49,6 @@ class DecksDiffCallback : DiffUtil.ItemCallback<Deck>() {
     }
 }
 
-class DecksListener(val clickListener: (itemClicked: Int, deckId: Long) -> Unit) {
-    fun onClick(itemClicked: Int, deck: Deck) = clickListener(itemClicked, deck.deckId)
+class DecksListener(val clickListener: (deckId: Deck) -> Unit) {
+    fun onClick(deck: Deck) = clickListener(deck)
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dialog_deck_actions">
+        <item>Show deck</item>
+        <item>Review</item>
+    </string-array>
+</resources>

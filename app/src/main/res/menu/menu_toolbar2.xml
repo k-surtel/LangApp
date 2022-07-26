@@ -8,4 +8,10 @@
         android:icon="@drawable/icon_add"
         android:title="@string/add_deck" />
 
+    <item
+        android:id="@+id/action_edit"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/icon_edit"
+        android:title="@string/edit_deck" />
+
 </menu>

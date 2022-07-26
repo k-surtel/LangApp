@@ -2,6 +2,7 @@ package com.ks.langapp.ui.deck
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -68,7 +69,15 @@ class DeckFragment : Fragment() {
         R.id.action_add -> {
             viewModel.deckId?.let {
                 navigate(DeckFragmentDirections
-                    .actionDeckFragmentToEditCardFragment(viewModel.deckId!!, Long.MIN_VALUE))
+                    .actionDeckFragmentToEditCardFragment(it, Long.MIN_VALUE))
+            }
+            true
+        }
+
+        R.id.action_edit -> {
+            viewModel.deckId?.let {
+                navigate(DeckFragmentDirections
+                    .actionDeckFragmentToEditDeckFragment(it))
             }
             true
         }
