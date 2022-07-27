@@ -5,7 +5,7 @@
     <data>
         <variable
             name="deck"
-            type="com.ks.langapp.database.entities.Deck" />
+            type="com.ks.langapp.data.database.entities.Deck" />
         <variable
             name="clickListener"
             type="com.ks.langapp.ui.adapters.DecksListener" />

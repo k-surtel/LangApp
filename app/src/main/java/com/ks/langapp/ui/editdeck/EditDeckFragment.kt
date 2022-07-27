@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.ks.langapp.R
-import com.ks.langapp.database.LangDatabase
+import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentEditDeckBinding
-import com.ks.langapp.ui.utils.navigate
 
 class EditDeckFragment : Fragment() {
 

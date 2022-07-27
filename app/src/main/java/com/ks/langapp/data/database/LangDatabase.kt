@@ -1,11 +1,11 @@
-package com.ks.langapp.database
+package com.ks.langapp.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ks.langapp.database.entities.Card
-import com.ks.langapp.database.entities.Deck
+import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.database.entities.Deck
 
 @Database(entities = [Card::class, Deck::class], version = 10, exportSchema = false)
 abstract class LangDatabase : RoomDatabase() {
@@ -13,6 +13,7 @@ abstract class LangDatabase : RoomDatabase() {
     abstract val langDatabaseDao: LangDatabaseDao
 
     companion object {
+        const val DATABASE_NAME = "lang_database"
 
         @Volatile
         private var INSTANCE: LangDatabase? = null

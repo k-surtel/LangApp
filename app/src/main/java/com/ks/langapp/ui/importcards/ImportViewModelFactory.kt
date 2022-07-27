@@ -3,7 +3,7 @@ package com.ks.langapp.ui.importcards
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ks.langapp.database.LangDatabaseDao
+import com.ks.langapp.data.database.LangDatabaseDao
 import java.lang.IllegalArgumentException
 
 class ImportViewModelFactory(private val dataSource: LangDatabaseDao, private val application: Application)

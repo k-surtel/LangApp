@@ -9,31 +9,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.ks.langapp.R
-import com.ks.langapp.database.LangDatabase
-import com.ks.langapp.database.entities.Deck
+import com.ks.langapp.data.database.LangDatabase
+import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.databinding.FragmentListOfDecksBinding
 import com.ks.langapp.ui.adapters.DecksAdapter
 import com.ks.langapp.ui.adapters.DecksListener
 import com.ks.langapp.ui.utils.navigate
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ListOfDecksFragment : Fragment() {
 
     private lateinit var binding: FragmentListOfDecksBinding
+    private val viewModel: ListOfDecksViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_list_of_decks, container, false)
-
-        val application = requireNotNull(this.activity).application
-        val dataSource = LangDatabase.getInstance(application).langDatabaseDao
-
-        val viewModelFactory = ListOfDecksViewModelFactory(dataSource, application)
-        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ListOfDecksViewModel::class.java]
 
         setHasOptionsMenu(true)
 
@@ -44,26 +44,9 @@ class ListOfDecksFragment : Fragment() {
             onDeckClick(deck)
         })
 
-        viewModel.decks.observe(viewLifecycleOwner) { it?.let { adapter.submitList(it) } }
+        lifecycleScope.launch { viewModel.decks.collectLatest { adapter.submitList(it) } }
+
         binding.decks.adapter = adapter
-
-        viewModel.navigateToCards.observe(viewLifecycleOwner) { deckId ->
-            deckId?.let {
-                if (deckId != Long.MIN_VALUE) {
-                    navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToDeckFragment(deckId))
-                    viewModel.onDeckNavigated()
-                }
-            }
-        }
-
-        viewModel.navigateToEditDeck.observe(viewLifecycleOwner) { deckId ->
-            deckId?.let {
-                if (deckId != Long.MIN_VALUE) {
-                    navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToFlashcardFragment(deckId))
-                    viewModel.onReviewNavigated()
-                }
-            }
-        }
 
         return binding.root
     }
@@ -71,14 +54,18 @@ class ListOfDecksFragment : Fragment() {
     private fun onDeckClick(deck: Deck) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(deck.name)
-
         builder.setItems(
             R.array.dialog_deck_actions
         ) { dialog, which ->
-            Log.d("LANG", which.toString())
-        }
 
-        // create and show the alert dialog
+            when (which) {
+                0 -> navigate(ListOfDecksFragmentDirections
+                    .actionListOfDecksFragmentToDeckFragment(deck.deckId))
+
+                1 -> navigate(ListOfDecksFragmentDirections
+                    .actionListOfDecksFragmentToFlashcardFragment(deck.deckId))
+            }
+        }
         val dialog = builder.create()
         dialog.show()
     }

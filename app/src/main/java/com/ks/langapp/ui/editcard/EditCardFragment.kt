@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.ks.langapp.R
-import com.ks.langapp.database.LangDatabase
+import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentEditCardBinding
 import com.ks.langapp.ui.utils.navigate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditCardFragment : Fragment() {
+
+    private val viewModel: EditCardViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -22,13 +26,7 @@ class EditCardFragment : Fragment() {
         val binding: FragmentEditCardBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_edit_card, container, false)
 
-        val application = requireNotNull(this.activity).application
-        val dataSource = LangDatabase.getInstance(application).langDatabaseDao
         val arguments = EditCardFragmentArgs.fromBundle(requireArguments())
-
-        val viewModelFactory = EditCardViewModelFactory(dataSource, application)
-        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[EditCardViewModel::class.java]
-
         viewModel.processArguments(arguments.cardId)
 
         binding.viewModel = viewModel
@@ -36,15 +34,10 @@ class EditCardFragment : Fragment() {
 
         binding.saveButton.setOnClickListener{
             if(!binding.deckName.text.isNullOrBlank() && !binding.description.text.isNullOrBlank()) {
-                if(arguments.cardId == Long.MIN_VALUE)
-                    viewModel.onSaveCard(arguments.deckId, binding.deckName.text.toString(), binding.description.text.toString())
-                else
-                    viewModel.onUpdateCard(binding.deckName.text.toString(), binding.description.text.toString())
-
+                viewModel.onSaveCard(arguments.deckId, binding.deckName.text.toString(), binding.description.text.toString())
                 navigateBack(arguments.deckId)
             } else
                 Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
-
         }
 
         viewModel.navigateBack.observe(viewLifecycleOwner) {

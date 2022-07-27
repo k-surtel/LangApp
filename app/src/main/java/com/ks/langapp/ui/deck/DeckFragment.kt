@@ -2,22 +2,26 @@ package com.ks.langapp.ui.deck
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.ks.langapp.R
-import com.ks.langapp.database.LangDatabase
+import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentDeckBinding
 import com.ks.langapp.ui.adapters.CardsAdapter
 import com.ks.langapp.ui.adapters.CardsListener
 import com.ks.langapp.ui.editdeck.EditDeckFragmentArgs
 import com.ks.langapp.ui.utils.navigate
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class DeckFragment : Fragment() {
 
-    private lateinit var viewModel: DeckViewModel
+    private val viewModel: DeckViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View {
@@ -25,12 +29,7 @@ class DeckFragment : Fragment() {
         val binding: FragmentDeckBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_deck, container, false)
 
-        val application = requireNotNull(this.activity).application
-        val dataSource = LangDatabase.getInstance(application).langDatabaseDao
-        val arguments = EditDeckFragmentArgs.fromBundle(requireArguments())
-
-        val viewModelFactory = DeckViewModelFactory(dataSource, application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[DeckViewModel::class.java]
+        val arguments = EditDeckFragmentArgs.fromBundle(requireArguments()) //todo
 
         setHasOptionsMenu(true)
 
@@ -40,7 +39,7 @@ class DeckFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val adapter = CardsAdapter(CardsListener { card -> viewModel.onCardClick(card) })
-        viewModel.cards.observe(viewLifecycleOwner) { it?.let { adapter.submitList(it) } }
+        lifecycleScope.launch { viewModel.cards.collectLatest { adapter.submitList(it) } }
         binding.cards.adapter = adapter
 
         viewModel.navigateToEditCard.observe(viewLifecycleOwner) { card ->

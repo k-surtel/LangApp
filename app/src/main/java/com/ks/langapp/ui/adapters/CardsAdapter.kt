@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ks.langapp.database.entities.Card
+import com.ks.langapp.data.database.entities.Card
 import com.ks.langapp.databinding.ItemCardBinding
 
 class CardsAdapter(private val clickListener: CardsListener) :

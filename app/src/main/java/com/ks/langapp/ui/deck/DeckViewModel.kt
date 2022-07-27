@@ -1,33 +1,37 @@
 package com.ks.langapp.ui.deck
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.ks.langapp.database.LangDatabaseDao
-import com.ks.langapp.database.entities.Card
-import com.ks.langapp.database.entities.Deck
+import androidx.lifecycle.*
+import com.ks.langapp.data.database.LangDatabaseDao
+import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.database.entities.Deck
+import com.ks.langapp.data.repository.LangRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DeckViewModel(val database: LangDatabaseDao, application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class DeckViewModel @Inject constructor(
+    private val repository: LangRepository
+) : ViewModel() {
 
-    private val _navigateToEditCard = MutableLiveData<Card?>()
+    private val _navigateToEditCard = MutableLiveData<Card?>() //todo
     val navigateToEditCard: LiveData<Card?> get() = _navigateToEditCard
     private val _navigateToFlashcards = MutableLiveData<Boolean>()
     val navigateToFlashcards: LiveData<Boolean> get() = _navigateToFlashcards
 
     var deckId: Long? = null
-    var deck: Deck? = null
-    lateinit var cards: LiveData<List<Card>>
+    //var deck: Deck? = null  //todo
+    lateinit var cards: Flow<List<Card>>
 
 
     fun processArguments(deckId: Long) {
         this.deckId = deckId
-        cards = database.getCardsOfDeck(deckId)
+        cards = repository.getCardsOfADeck(deckId)
 
         viewModelScope.launch {
-            deck = database.getDeck(deckId)
+            //deck = database.getDeck(deckId)
         }
     }
 

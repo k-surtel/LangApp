@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ks.langapp.database.entities.Deck
+import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.databinding.ItemDeckBinding
 
 class DecksAdapter(private val clickListener: DecksListener) :

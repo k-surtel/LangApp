@@ -29,11 +29,13 @@
             android:id="@+id/button_revise"
             android:text="@string/learn"
             android:onClick="@{() -> viewModel.onReviseButtonClick()}"
-            setVisibility="@{viewModel.cards.size() != 0}"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+<!--        setVisibility="@{viewModel.cards.size() != 0}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

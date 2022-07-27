@@ -1,13 +1,19 @@
 package com.ks.langapp.ui.flashcard
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.ks.langapp.database.LangDatabaseDao
-import com.ks.langapp.database.entities.Card
+import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.repository.LangRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FlashcardViewModel(val database: LangDatabaseDao, application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class FlashcardViewModel @Inject constructor(
+    private val repository: LangRepository
+    ) : ViewModel() {
 
-    lateinit var cards: LiveData<List<Card>>
+    lateinit var cards: List<Card>
 
     private val _currentIndex = MutableLiveData<Int>()
     private val currentIndex: LiveData<Int> get() = _currentIndex
@@ -18,22 +24,28 @@ class FlashcardViewModel(val database: LangDatabaseDao, application: Application
 
     fun processArguments(deckId: Long) {
         if(deckId != Long.MIN_VALUE) {
-            cards = Transformations.map(database.getCardsOfDeck(deckId)) { it.shuffled() }
-            _currentIndex.value = 0
+            viewModelScope.launch {
+                repository.getCardsOfADeck(deckId).collectLatest {
+                    cards = it.shuffled()
+
+                    _currentIndex.value = 0
+                    setFlashcard()
+                }
+            }
         }
     }
 
-    fun setFlashcard() { _currentWord.value = cards.value!![currentIndex.value!!].word }
+    fun setFlashcard() { _currentWord.value = cards[currentIndex.value!!].word }
 
     fun onCardClicked() {
-        if(currentWord.value == cards.value!![currentIndex.value!!].word)
-            _currentWord.value = cards.value!![currentIndex.value!!].description
+        if(currentWord.value == cards[currentIndex.value!!].word)
+            _currentWord.value = cards[currentIndex.value!!].description
         else
-            _currentWord.value = cards.value!![currentIndex.value!!].word
+            _currentWord.value = cards[currentIndex.value!!].word
     }
 
     fun onWrongClicked() {
-        if(cards.value!!.size > currentIndex.value!!.plus(1))
+        if(cards.size > currentIndex.value!!.plus(1))
             _currentIndex.value = _currentIndex.value!!.plus(1)
         else _currentIndex.value = 0
         setFlashcard()

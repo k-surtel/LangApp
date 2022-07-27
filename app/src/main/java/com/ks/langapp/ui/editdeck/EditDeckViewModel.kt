@@ -1,14 +1,12 @@
 package com.ks.langapp.ui.editdeck
 
 import android.app.Application
-import android.view.View
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.ks.langapp.database.LangDatabaseDao
-import com.ks.langapp.database.entities.Deck
+import com.ks.langapp.data.database.LangDatabaseDao
+import com.ks.langapp.data.database.entities.Deck
 import kotlinx.coroutines.launch
 
 class EditDeckViewModel(val database: LangDatabaseDao, application: Application) : AndroidViewModel(application) {

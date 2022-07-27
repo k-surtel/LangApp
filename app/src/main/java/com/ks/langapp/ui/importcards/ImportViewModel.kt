@@ -1,13 +1,11 @@
 package com.ks.langapp.ui.importcards
 
 import android.app.Application
-import android.content.Intent
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.ks.langapp.database.LangDatabaseDao
-import com.ks.langapp.database.entities.Card
-import com.ks.langapp.database.entities.Deck
+import com.ks.langapp.data.database.LangDatabaseDao
+import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.database.entities.Deck
 import kotlinx.coroutines.launch
 
 class ImportViewModel(val database: LangDatabaseDao, application: Application) : AndroidViewModel(application) {
