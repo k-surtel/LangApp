@@ -1,4 +1,4 @@
-package com.ks.langapp.ui.decks
+package com.ks.langapp.ui.listOfDecks
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -10,31 +10,30 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ks.langapp.R
 import com.ks.langapp.database.LangDatabase
 import com.ks.langapp.database.entities.Deck
-import com.ks.langapp.databinding.FragmentDecksBinding
+import com.ks.langapp.databinding.FragmentListOfDecksBinding
 import com.ks.langapp.ui.adapters.DecksAdapter
 import com.ks.langapp.ui.adapters.DecksListener
 import com.ks.langapp.ui.utils.navigate
 
 
-class DecksFragment : Fragment() {
+class ListOfDecksFragment : Fragment() {
 
-    private lateinit var binding: FragmentDecksBinding
+    private lateinit var binding: FragmentListOfDecksBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_decks, container, false)
+            inflater, R.layout.fragment_list_of_decks, container, false)
 
         val application = requireNotNull(this.activity).application
         val dataSource = LangDatabase.getInstance(application).langDatabaseDao
 
-        val viewModelFactory = DecksViewModelFactory(dataSource, application)
-        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[DecksViewModel::class.java]
+        val viewModelFactory = ListOfDecksViewModelFactory(dataSource, application)
+        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ListOfDecksViewModel::class.java]
 
         setHasOptionsMenu(true)
 
@@ -51,7 +50,7 @@ class DecksFragment : Fragment() {
         viewModel.navigateToCards.observe(viewLifecycleOwner) { deckId ->
             deckId?.let {
                 if (deckId != Long.MIN_VALUE) {
-                    navigate(DecksFragmentDirections.actionDecksFragmentToDeckFragment(deckId))
+                    navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToDeckFragment(deckId))
                     viewModel.onDeckNavigated()
                 }
             }
@@ -60,7 +59,7 @@ class DecksFragment : Fragment() {
         viewModel.navigateToEditDeck.observe(viewLifecycleOwner) { deckId ->
             deckId?.let {
                 if (deckId != Long.MIN_VALUE) {
-                    navigate(DecksFragmentDirections.actionDecksFragmentToFlashcardFragment(deckId))
+                    navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToFlashcardFragment(deckId))
                     viewModel.onReviewNavigated()
                 }
             }
@@ -86,11 +85,11 @@ class DecksFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_add -> {
-            navigate(DecksFragmentDirections.actionDecksFragmentToEditDeckFragment(Long.MIN_VALUE))
+            navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToEditDeckFragment(Long.MIN_VALUE))
             true
         }
         R.id.action_import -> {
-            navigate(DecksFragmentDirections.actionDecksFragmentToImportFragment())
+            navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToImportFragment())
             true
         }
         else -> super.onOptionsItemSelected(item)

@@ -7,13 +7,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.ks.langapp.ui.decks.DecksViewModel" />
+            type="com.ks.langapp.ui.listOfDecks.ListOfDecksViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.decks.DecksFragment">
+        tools:context=".ui.listOfDecks.ListOfDecksFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/decks"

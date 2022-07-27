@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/decksFragment">
+    app:startDestination="@id/listOfDecksFragment">
 
     <fragment
-        android:id="@+id/decksFragment"
-        android:name="com.ks.langapp.ui.decks.DecksFragment"
-        android:label="DecksFragment" >
+        android:id="@+id/listOfDecksFragment"
+        android:name="com.ks.langapp.ui.listOfDecks.ListOfDecksFragment"
+        android:label="ListOfDecksFragment" >
         <action
-            android:id="@+id/action_decksFragment_to_deckFragment"
+            android:id="@+id/action_listOfDecksFragment_to_deckFragment"
             app:destination="@id/deckFragment" />
         <action
-            android:id="@+id/action_decksFragment_to_importFragment"
+            android:id="@+id/action_listOfDecksFragment_to_importFragment"
             app:destination="@id/importFragment" />
         <action
-            android:id="@+id/action_decksFragment_to_flashcardFragment"
+            android:id="@+id/action_listOfDecksFragment_to_flashcardFragment"
             app:destination="@id/flashcardFragment" />
         <action
-            android:id="@+id/action_decksFragment_to_editDeckFragment"
+            android:id="@+id/action_listOfDecksFragment_to_editDeckFragment"
             app:destination="@id/editDeckFragment" />
     </fragment>
 
