@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.database.entities.CardsCount
 import com.ks.langapp.data.database.entities.Deck
 import kotlinx.coroutines.flow.Flow
 
@@ -15,20 +16,11 @@ interface LangDatabaseDao {
     @Insert
     suspend fun insertAll(cards: List<Card>) //
 
-    @Insert
-    suspend fun insert(deck: Deck): Long //
-
     @Update
     suspend fun update(deck: Deck) //
 
     @Query("DELETE FROM table_decks WHERE deckId = :key ")
     suspend fun deleteDeck(key: Long) //
-
-    @Query("DELETE FROM table_cards WHERE deckId = :key ")
-    suspend fun deleteCardsOfADeck(key: Long) //
-
-    @Query("SELECT * from table_decks WHERE deckId = :key")
-    suspend fun getDeck(key: Long): Deck? //
 
     @Query("DELETE FROM table_cards")
     suspend fun clearCards() //
@@ -42,6 +34,17 @@ interface LangDatabaseDao {
 
 
 
+    @Query("SELECT deckId, COUNT(*) AS cardsCount FROM table_cards GROUP BY deckId")
+    suspend fun getCardsCounts(): List<CardsCount>
+
+    @Query("DELETE FROM table_cards WHERE deckId = :key ")
+    suspend fun deleteCardsOfADeck(key: Long)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insert(deck: Deck): Long
+
+    @Query("SELECT * from table_decks WHERE deckId = :key")
+    suspend fun getDeck(key: Long): Deck?
 
     @Query("DELETE FROM table_cards WHERE cardId = :key ")
     suspend fun deleteCard(key: Long)

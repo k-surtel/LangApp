@@ -35,13 +35,13 @@ class FlashcardViewModel @Inject constructor(
         }
     }
 
-    fun setFlashcard() { _currentWord.value = cards[currentIndex.value!!].word }
+    fun setFlashcard() { _currentWord.value = cards[currentIndex.value!!].front }
 
     fun onCardClicked() {
-        if(currentWord.value == cards[currentIndex.value!!].word)
-            _currentWord.value = cards[currentIndex.value!!].description
+        if(currentWord.value == cards[currentIndex.value!!].front)
+            _currentWord.value = cards[currentIndex.value!!].back
         else
-            _currentWord.value = cards[currentIndex.value!!].word
+            _currentWord.value = cards[currentIndex.value!!].front
     }
 
     fun onWrongClicked() {

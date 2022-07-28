@@ -14,8 +14,8 @@ data class Card (
     var deckId: Long,
 
     @ColumnInfo
-    var word: String,
+    var front: String,
 
     @ColumnInfo
-    var description: String
+    var back: String
 )

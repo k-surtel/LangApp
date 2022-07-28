@@ -7,12 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.ks.langapp.R
 import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentEditDeckBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditDeckFragment : Fragment() {
+
+    private val viewModel: EditDeckViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -20,26 +25,15 @@ class EditDeckFragment : Fragment() {
         val binding: FragmentEditDeckBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_edit_deck, container, false)
 
-        val application = requireNotNull(this.activity).application
-        val dataSource = LangDatabase.getInstance(application).langDatabaseDao
         val arguments = EditDeckFragmentArgs.fromBundle(requireArguments())
-
-        val viewModelFactory = EditDeckViewModelFactory(dataSource, application)
-        val viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[EditDeckViewModel::class.java]
-
         viewModel.processArguments(arguments.deckId)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         binding.buttonSave.setOnClickListener{
-            if(binding.name.text.isNotBlank()) {
-                if(arguments.deckId == Long.MIN_VALUE) viewModel.onSaveDeck(binding.name.text.toString())
-                else viewModel.onUpdateDeck(binding.name.text.toString())
-                //navigateBack()
-            } else
-                Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
-
+            if(binding.name.text.isNotBlank()) viewModel.onSaveDeck(binding.name.text.toString())
+             else Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
         }
 
         viewModel.navigateBack.observe(viewLifecycleOwner) {

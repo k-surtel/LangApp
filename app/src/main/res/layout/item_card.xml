@@ -34,7 +34,7 @@
                 android:layout_marginStart="@dimen/margin_small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{card.word}"
+                android:text="@{card.front}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -44,7 +44,7 @@
                 android:layout_marginEnd="@dimen/margin_small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{card.description}"
+                android:text="@{card.back}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

@@ -43,10 +43,10 @@ class ListOfDecksFragment : Fragment() {
         val adapter = DecksAdapter(DecksListener { deck ->
             onDeckClick(deck)
         })
-
         lifecycleScope.launch { viewModel.decks.collectLatest { adapter.submitList(it) } }
-
         binding.decks.adapter = adapter
+
+        viewModel.getCardsCounts()
 
         return binding.root
     }
@@ -64,6 +64,9 @@ class ListOfDecksFragment : Fragment() {
 
                 1 -> navigate(ListOfDecksFragmentDirections
                     .actionListOfDecksFragmentToFlashcardFragment(deck.deckId))
+
+                2 -> navigate(ListOfDecksFragmentDirections
+                    .actionListOfDecksFragmentToEditDeckFragment(deck.deckId))
             }
         }
         val dialog = builder.create()

@@ -14,7 +14,7 @@ class EditCardViewModel @Inject constructor(
     private val repository: LangRepository
 ) : ViewModel() {
 
-    private val _navigateBack = MutableLiveData<Boolean>() //todo
+    private val _navigateBack = MutableLiveData<Boolean>()
     val navigateBack: LiveData<Boolean> get() = _navigateBack
 
     private val _card = MutableStateFlow<Card?>(null)

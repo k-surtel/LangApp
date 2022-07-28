@@ -25,7 +25,7 @@ object AppModule {
             context.applicationContext,
             LangDatabase::class.java,
             LangDatabase.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

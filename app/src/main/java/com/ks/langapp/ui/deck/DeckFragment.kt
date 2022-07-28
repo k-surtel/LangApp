@@ -29,32 +29,22 @@ class DeckFragment : Fragment() {
         val binding: FragmentDeckBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_deck, container, false)
 
-        val arguments = EditDeckFragmentArgs.fromBundle(requireArguments()) //todo
+        val arguments = EditDeckFragmentArgs.fromBundle(requireArguments())
+        viewModel.processArguments(arguments.deckId)
 
         setHasOptionsMenu(true)
 
-        viewModel.processArguments(arguments.deckId)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val adapter = CardsAdapter(CardsListener { card -> viewModel.onCardClick(card) })
+        val adapter = CardsAdapter(CardsListener { card ->
+            viewModel.deckId?.let {
+                navigate(DeckFragmentDirections.actionDeckFragmentToEditCardFragment(it, card.cardId))
+            }
+        })
         lifecycleScope.launch { viewModel.cards.collectLatest { adapter.submitList(it) } }
         binding.cards.adapter = adapter
-
-        viewModel.navigateToEditCard.observe(viewLifecycleOwner) { card ->
-            card?.let {
-                navigate(DeckFragmentDirections.actionDeckFragmentToEditCardFragment(card.deckId, card.cardId))
-                viewModel.onEditCardNavigated()
-            }
-        }
-
-        viewModel.navigateToFlashcards.observe(viewLifecycleOwner) { ifNavigate ->
-            if (ifNavigate) {
-                navigate(DeckFragmentDirections.actionDeckFragmentToFlashcardFragment(arguments.deckId))
-                viewModel.onFlashcardsNavigated()
-            }
-        }
 
         return binding.root
     }
