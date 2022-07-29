@@ -1,8 +1,8 @@
 package com.ks.langapp.data.repository
 
+import android.util.Log
 import com.ks.langapp.data.database.LangDatabaseDao
 import com.ks.langapp.data.database.entities.Card
-import com.ks.langapp.data.database.entities.CardsCount
 import com.ks.langapp.data.database.entities.Deck
 import kotlinx.coroutines.flow.Flow
 
@@ -41,9 +41,5 @@ class LangRepositoryImpl(
 
     override fun getCardsOfADeck(deckId: Long): Flow<List<Card>> {
         return dao.getCardsOfADeck(deckId)
-    }
-
-    override suspend fun getCardsCounts(): List<CardsCount> {
-        return dao.getCardsCounts()
     }
 }

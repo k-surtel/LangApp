@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 import com.ks.langapp.data.database.entities.Card
-import com.ks.langapp.data.database.entities.CardsCount
 import com.ks.langapp.data.database.entities.Deck
 import kotlinx.coroutines.flow.Flow
 
@@ -34,8 +33,6 @@ interface LangDatabaseDao {
 
 
 
-    @Query("SELECT deckId, COUNT(*) AS cardsCount FROM table_cards GROUP BY deckId")
-    suspend fun getCardsCounts(): List<CardsCount>
 
     @Query("DELETE FROM table_cards WHERE deckId = :key ")
     suspend fun deleteCardsOfADeck(key: Long)

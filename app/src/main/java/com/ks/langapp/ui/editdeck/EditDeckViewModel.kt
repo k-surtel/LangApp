@@ -29,7 +29,9 @@ class EditDeckViewModel @Inject constructor(
     }
 
     fun onSaveDeck(name: String) = viewModelScope.launch {
-        val deckId = repository.saveDeck(Deck(deck.value?.deckId ?: 0, name))
+        val deckId = repository.saveDeck(
+            Deck(deck.value?.deckId ?: 0, name, deck.value?.cardsCount ?: 0)
+        )
     }
 
     fun onDeleteDeck() {

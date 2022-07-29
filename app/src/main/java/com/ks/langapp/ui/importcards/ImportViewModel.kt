@@ -16,7 +16,7 @@ class ImportViewModel(val database: LangDatabaseDao, application: Application) :
 
     fun onImportExampleDeck() {
         viewModelScope.launch {
-            val deckId = insertDeck(Deck(0, "Example Deck"))
+            val deckId = insertDeck(Deck(0, "Example Deck", 26))
             prepareExampleList(deckId)
         }
     }

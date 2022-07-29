@@ -34,7 +34,9 @@ class EditCardFragment : Fragment() {
 
         binding.saveButton.setOnClickListener{
             if(!binding.deckName.text.isNullOrBlank() && !binding.description.text.isNullOrBlank()) {
-                viewModel.onSaveCard(arguments.deckId, binding.deckName.text.toString(), binding.description.text.toString())
+                viewModel.onSaveCard(arguments.deckId, binding.deckName.text.toString(),
+                    binding.description.text.toString())
+
                 navigateBack(arguments.deckId)
             } else
                 Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()

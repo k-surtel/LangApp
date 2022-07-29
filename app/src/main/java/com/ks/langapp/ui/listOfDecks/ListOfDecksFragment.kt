@@ -46,8 +46,6 @@ class ListOfDecksFragment : Fragment() {
         lifecycleScope.launch { viewModel.decks.collectLatest { adapter.submitList(it) } }
         binding.decks.adapter = adapter
 
-        viewModel.getCardsCounts()
-
         return binding.root
     }
 

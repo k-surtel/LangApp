@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.ks.langapp.data.database.entities.Card
 import com.ks.langapp.data.database.entities.Deck
 
-@Database(entities = [Card::class, Deck::class], version = 11, exportSchema = false)
+@Database(entities = [Card::class, Deck::class], version = 12, exportSchema = false)
 abstract class LangDatabase : RoomDatabase() {
 
     abstract val langDatabaseDao: LangDatabaseDao
