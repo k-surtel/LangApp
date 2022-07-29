@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_edit.xml" value="0.1165" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_learn.xml" value="0.15" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/dialog_deck_actions.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_deck.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_deck.xml" value="0.33" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_decks.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_edit_card.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/item_card.xml" value="0.15885416666666666" />

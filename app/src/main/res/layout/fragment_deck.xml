@@ -24,25 +24,56 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/deck_name"
+                app:layout_constraintStart_toStartOf="@+id/deck_name">
 
                 <TextView
                     android:id="@+id/deck_name"
-                    android:text="@{viewModel.deck.name}"
+                    style="@style/TextAppearance.Material3.ActionBar.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@{viewModel.deck.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/cards_count"
-                    android:text="@{String.valueOf(viewModel.deck.cardsCount)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/deck_name"
+                    android:layout_marginTop="8dp"
+                    android:text="@{String.valueOf(viewModel.deck.cardsCount)}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/deck_name" />
+
+                <ImageButton
+                    android:id="@+id/edit_button"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_edit"
+                    android:contentDescription="@string/edit"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:text="@string/edit"
+                    app:layout_constraintEnd_toStartOf="@id/learn_button"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cards_count" />
+
+                <ImageButton
+                    android:id="@+id/learn_button"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_learn"
+                    android:contentDescription="@string/learn"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/edit_button"
+                    app:layout_constraintTop_toBottomOf="@id/cards_count" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -56,20 +87,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/deck_info"/>
-
-        <Button
-            android:id="@+id/button_revise"
-            android:text="@string/learn"
-
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-<!--        android:onClick="@{() -> viewModel.onReviseButtonClick()}"-->
-
-<!--        setVisibility="@{viewModel.cards.size() != 0}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
