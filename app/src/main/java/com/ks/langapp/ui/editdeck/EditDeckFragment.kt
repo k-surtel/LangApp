@@ -9,10 +9,16 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.ks.langapp.R
 import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentEditDeckBinding
+import com.ks.langapp.ui.editcard.EditCardFragmentDirections
+import com.ks.langapp.ui.utils.navigate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditDeckFragment : Fragment() {
@@ -32,21 +38,17 @@ class EditDeckFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.buttonSave.setOnClickListener{
-            if(binding.name.text.isNotBlank()) viewModel.onSaveDeck(binding.name.text.toString())
-             else Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
+            if(!binding.deckName.text.isNullOrBlank()) {
+                viewModel.onSaveDeck(binding.deckName.text.toString())
+            } else Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.navigateBack.observe(viewLifecycleOwner) {
-            if(it) {
-                viewModel.onNavigateBackCalled()
-                //navigateBack()
+        lifecycleScope.launch {
+            viewModel.navigateBack.collectLatest {
+                findNavController().popBackStack()
             }
         }
 
         return binding.root
     }
-
-//    private fun navigateBack() {
-//        navigate(EditDeckFragmentDirections.actionEditDeckFragmentToDecksFragment())
-//    }
 }

@@ -9,11 +9,15 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.ks.langapp.R
 import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentEditCardBinding
 import com.ks.langapp.ui.utils.navigate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditCardFragment : Fragment() {
@@ -33,28 +37,19 @@ class EditCardFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.saveButton.setOnClickListener{
-            if(!binding.deckName.text.isNullOrBlank() && !binding.description.text.isNullOrBlank()) {
-                viewModel.onSaveCard(arguments.deckId, binding.deckName.text.toString(),
-                    binding.description.text.toString())
-
-                navigateBack(arguments.deckId)
+            if(!binding.front.text.isNullOrBlank() && !binding.back.text.isNullOrBlank()) {
+                viewModel.onSaveCard(arguments.deckId, binding.front.text.toString(),
+                    binding.back.text.toString())
             } else
                 Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.navigateBack.observe(viewLifecycleOwner) {
-            if(it) {
-                viewModel.onNavigateBackCalled()
-                navigateBack(arguments.deckId)
+        lifecycleScope.launch {
+            viewModel.navigateBack.collectLatest {
+                findNavController().popBackStack()
             }
         }
 
-        binding.buttonDelete.setOnClickListener { viewModel.onDeleteCard() }
-
         return binding.root
-    }
-
-    private fun navigateBack(deckId: Long) {
-        navigate(EditCardFragmentDirections.actionEditCardFragmentToCardsFragment(deckId))
     }
 }
