@@ -13,32 +13,81 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         tools:context=".ui.flashcard.FlashcardFragment">
 
+        <TextView
+            android:id="@+id/cards_left_label"
+            android:text="@string/cards_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/cards_left"
+            android:layout_width="wrap_content"
+            android:text="@{String.valueOf(viewModel.cards.size() - viewModel.currentIndex)}"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/cards_left_label"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/separator"
+            android:layout_width="wrap_content"
+            android:text="/"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/cards_left"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/all_cards"
+            android:layout_width="wrap_content"
+            android:text="@{String.valueOf(viewModel.cards.size())}"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/separator"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/card"
+            android:id="@+id/flashcard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginVertical="16dp"
             android:onClick="@{() -> viewModel.onCardClicked()}"
             app:layout_constraintBottom_toTopOf="@id/button_wrong"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/cards_left_label">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true">
 
                 <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/front_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.currentWord}"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@{viewModel.currentCard.front}"
+                    app:layout_constraintBottom_toTopOf="@id/back_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/back_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.currentCard.back}"
+                    android:visibility="@{viewModel.backVisibility}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/front_text" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -64,9 +113,20 @@
             android:onClick="@{() -> viewModel.onWrongClicked()}"
             android:text="@string/right"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_easy"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_wrong" />
+
+        <Button
+            android:id="@+id/button_easy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.onWrongClicked()}"
+            android:text="@string/easy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_right" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

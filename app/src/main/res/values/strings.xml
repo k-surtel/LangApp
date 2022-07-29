@@ -7,6 +7,7 @@
     <string name="save">Save</string>
     <string name="wrong">Wrong</string>
     <string name="right">Right</string>
+    <string name="easy">Easy</string>
     <string name="edit">Edit</string>
     <string name="import_txt_file">Import TXT file</string>
     <string name="front">Front</string>
@@ -14,4 +15,5 @@
     <string name="learn">Learn</string>
     <string name="add_deck">Add deck</string>
     <string name="edit_deck">Edit deck</string>
+    <string name="cards_left">Cards left:</string>
 </resources>
