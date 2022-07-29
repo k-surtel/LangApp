@@ -34,7 +34,6 @@ class DeckFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -43,7 +42,11 @@ class DeckFragment : Fragment() {
                 navigate(DeckFragmentDirections.actionDeckFragmentToEditCardFragment(it, card.cardId))
             }
         })
-        lifecycleScope.launch { viewModel.cards.collectLatest { adapter.submitList(it) } }
+        lifecycleScope.launch { viewModel.cards.collectLatest {
+            if (viewModel.deck.value!= null && it.size != viewModel.deck.value!!.cardsCount)
+                viewModel.updateCardsCount(it.size)
+            adapter.submitList(it)
+        } }
         binding.cards.adapter = adapter
 
         return binding.root

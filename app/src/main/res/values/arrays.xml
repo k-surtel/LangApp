@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="dialog_deck_actions">
-        <item>Show</item>
-        <item>Review</item>
-        <item>Edit</item>
+        <item>Show deck</item>
+        <item>Learn</item>
+        <item>Edit deck</item>
     </string-array>
 </resources>
