@@ -38,7 +38,6 @@
             android:text="@string/delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.onDeleteDeck()}"
             setVisibility="@{viewModel.deck != null}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

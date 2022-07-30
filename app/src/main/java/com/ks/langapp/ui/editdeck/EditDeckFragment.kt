@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ks.langapp.R
 import com.ks.langapp.databinding.FragmentEditDeckBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,16 +40,24 @@ class EditDeckFragment : Fragment() {
             } else Toast.makeText(context, R.string.form_incomplete, Toast.LENGTH_SHORT).show()
         }
 
+        binding.buttonDelete.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.delete_deck)
+                .setMessage(getString(R.string.are_you_sure, viewModel.deck.value!!.name))
+                .setPositiveButton(R.string.delete) { _, _ ->
+                    viewModel.onDeleteDeck()
+                }
+                .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+                .setCancelable(true)
+                .show()
+        }
+
         lifecycleScope.launch {
             viewModel.navigateBackSkipDeckFragment.collectLatest {
-
                 if (it) {
                     findNavController().popBackStack()
                     findNavController().popBackStack()
                 } else findNavController().popBackStack()
-
-                //findNavController().popBackStack(R.id.deckFragment, false)
-                //findNavController().popBackStack(R.id.listOfDecksFragment, true)
             }
         }
 

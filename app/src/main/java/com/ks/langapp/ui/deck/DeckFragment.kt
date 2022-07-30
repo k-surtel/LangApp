@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.ks.langapp.R
 import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentDeckBinding
@@ -15,6 +17,7 @@ import com.ks.langapp.ui.adapters.CardsListener
 import com.ks.langapp.ui.editdeck.EditDeckFragmentArgs
 import com.ks.langapp.ui.utils.navigate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -38,26 +41,35 @@ class DeckFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val adapter = CardsAdapter(CardsListener { card ->
-            viewModel.deckId?.let {
-                navigate(DeckFragmentDirections.actionDeckFragmentToEditCardFragment(it, card.cardId))
+            viewModel.deck.value?.let {
+                viewModel.editedCard = card
+                navigate(DeckFragmentDirections.actionDeckFragmentToEditCardFragment(it.deckId, card.cardId))
             }
         })
         lifecycleScope.launch { viewModel.cards.collectLatest {
             if (viewModel.deck.value!= null && it.size != viewModel.deck.value!!.cardsCount)
-                viewModel.updateCardsCount(it.size)
+                viewModel.checkForUpdates(it)
             adapter.submitList(it)
         } }
         binding.cards.adapter = adapter
 
         binding.editButton.setOnClickListener {
-            viewModel.deckId?.let {
-                navigate(DeckFragmentDirections.actionDeckFragmentToEditDeckFragment(it, true))
+            viewModel.deck.value?.let {
+                navigate(DeckFragmentDirections.actionDeckFragmentToEditDeckFragment(it.deckId, true))
             }
         }
 
         binding.learnButton.setOnClickListener {
-            viewModel.deckId?.let {
-                navigate(DeckFragmentDirections.actionDeckFragmentToFlashcardFragment(it))
+            viewModel.deck.value?.let {
+                navigate(DeckFragmentDirections.actionDeckFragmentToFlashcardFragment(it.deckId))
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.showUndoForCardDeletion.collectLatest { card ->
+                Snackbar.make(requireView(), R.string.card_deleted, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo) { viewModel.undoCardDeletion(card) }
+                    .show()
             }
         }
 
@@ -71,17 +83,17 @@ class DeckFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_add -> {
-            viewModel.deckId?.let {
+            viewModel.deck.value?.let {
                 navigate(DeckFragmentDirections
-                    .actionDeckFragmentToEditCardFragment(it, Long.MIN_VALUE))
+                    .actionDeckFragmentToEditCardFragment(it.deckId, Long.MIN_VALUE))
             }
             true
         }
 
         R.id.action_edit -> {
-            viewModel.deckId?.let {
+            viewModel.deck.value?.let {
                 navigate(DeckFragmentDirections
-                    .actionDeckFragmentToEditDeckFragment(it, true))
+                    .actionDeckFragmentToEditDeckFragment(it.deckId, true))
             }
             true
         }

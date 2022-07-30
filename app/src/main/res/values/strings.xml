@@ -16,4 +16,9 @@
     <string name="add_deck">Add deck</string>
     <string name="edit_deck">Edit deck</string>
     <string name="cards_left">Cards left:</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_deck">Delete deck?</string>
+    <string name="are_you_sure">Are you sure you want to delete %1$s?</string>
+    <string name="card_deleted">Card has been deleted</string>
+    <string name="undo">Undo</string>
 </resources>
