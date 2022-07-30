@@ -64,7 +64,7 @@ class ListOfDecksFragment : Fragment() {
                     .actionListOfDecksFragmentToFlashcardFragment(deck.deckId))
 
                 2 -> navigate(ListOfDecksFragmentDirections
-                    .actionListOfDecksFragmentToEditDeckFragment(deck.deckId))
+                    .actionListOfDecksFragmentToEditDeckFragment(deck.deckId, false))
             }
         }
         val dialog = builder.create()
@@ -73,7 +73,7 @@ class ListOfDecksFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_add -> {
-            navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToEditDeckFragment(Long.MIN_VALUE))
+            navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToEditDeckFragment(Long.MIN_VALUE, false))
             true
         }
         R.id.action_import -> {

@@ -16,11 +16,8 @@
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/card_corner_radius"
         android:onClick="@{() -> clickListener.onClick(deck)}"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

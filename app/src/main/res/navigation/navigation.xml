@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/listOfDecksFragment"
         android:name="com.ks.langapp.ui.listOfDecks.ListOfDecksFragment"
-        android:label="ListOfDecksFragment" >
+        android:label="ListOfDecksFragment">
         <action
             android:id="@+id/action_listOfDecksFragment_to_deckFragment"
             app:destination="@id/deckFragment" />
@@ -24,42 +24,11 @@
     </fragment>
 
     <fragment
-        android:id="@+id/editDeckFragment"
-        android:name="com.ks.langapp.ui.editdeck.EditDeckFragment"
-        android:label="EditDeckFragment" >
-        <argument
-            android:name="deckId"
-            app:argType="long" />
-
-        <fragment
-            android:id="@+id/entriesFragment"
-            android:name="com.ks.langapp.ui.deck.DeckFragment"
-            android:label="EntriesFragment"
-            tools:layout="@layout/fragment_entries">
-            <action
-                android:id="@+id/action_entriesFragment_to_editEntryFragment"
-                app:destination="@id/editEntryFragment" />
-        </fragment>
-
-        <fragment
-            android:id="@+id/editEntryFragment"
-            android:name="com.ks.langapp.ui.editcard.EditCardFragment"
-            android:label="EditEntryFragment"
-            tools:layout="@layout/fragment_edit_entry" >
-            <argument
-                android:name="entryId"
-                app:argType="long" />
-            <action
-                android:id="@+id/action_editEntryFragment_to_entriesFragment"
-                app:destination="@id/entriesFragment" />
-        </fragment>
-
-    </fragment>
-    <fragment
         android:id="@+id/deckFragment"
         android:name="com.ks.langapp.ui.deck.DeckFragment"
-        android:label="DeckFragment" >
-        <argument android:name="deckId"
+        android:label="DeckFragment">
+        <argument
+            android:name="deckId"
             app:argType="long" />
         <action
             android:id="@+id/action_deckFragment_to_editCardFragment"
@@ -71,33 +40,44 @@
             android:id="@+id/action_deckFragment_to_editDeckFragment"
             app:destination="@id/editDeckFragment" />
     </fragment>
+
     <fragment
-        android:id="@+id/editCardFragment"
-        android:name="com.ks.langapp.ui.editcard.EditCardFragment"
-        android:label="EditCardFragment" >
+        android:id="@+id/editDeckFragment"
+        android:name="com.ks.langapp.ui.editdeck.EditDeckFragment"
+        android:label="EditDeckFragment">
         <argument
             android:name="deckId"
             app:argType="long" />
-        <action
-            android:id="@+id/action_editCardFragment_to_cardsFragment"
-            app:destination="@id/deckFragment"
-            app:popUpTo="@id/deckFragment"
-            app:popUpToInclusive="true" />
+        <argument
+            android:name="navigatedFromDeckFragment"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editCardFragment"
+        android:name="com.ks.langapp.ui.editcard.EditCardFragment"
+        android:label="EditCardFragment"
+        tools:layout="@layout/fragment_edit_card">
+        <argument
+            android:name="deckId"
+            app:argType="long" />
         <argument
             android:name="cardId"
             app:argType="long" />
     </fragment>
+
     <fragment
         android:id="@+id/flashcardFragment"
-        android:name="com.ks.langapp.ui.flashcard.FlashcardFragment"
-        android:label="FlashcardFragment" >
+        android:label="FlashcardFragment"
+        android:name="com.ks.langapp.ui.flashcard.FlashcardFragment">
         <argument
             android:name="deckId"
             app:argType="long" />
     </fragment>
+
     <fragment
         android:id="@+id/importFragment"
-        android:name="com.ks.langapp.ui.importcards.ImportFragment"
-        android:label="ImportFragment" />
+        android:label="ImportFragment"
+        android:name="com.ks.langapp.ui.importcards.ImportFragment" />
 
-</navigation>
+    </navigation>

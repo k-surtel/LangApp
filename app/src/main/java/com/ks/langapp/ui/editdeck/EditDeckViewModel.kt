@@ -16,13 +16,16 @@ class EditDeckViewModel @Inject constructor(
     private val repository: LangRepository
 ) : ViewModel() {
 
-    private val _navigateBack = MutableSharedFlow<Long>()
-    val navigateBack = _navigateBack.asSharedFlow()
+    private val _navigateBackSkipDeckFragment = MutableSharedFlow<Boolean>()
+    val navigateBackSkipDeckFragment = _navigateBackSkipDeckFragment.asSharedFlow()
+    private var navigatedFromDeckFragment = false
 
     private val _deck = MutableStateFlow<Deck?>(null)
     val deck: StateFlow<Deck?> = _deck
 
-    fun processArguments(deckId: Long) {
+    fun processArguments(deckId: Long, navigatedFromDeckFragment: Boolean) {
+        this.navigatedFromDeckFragment = navigatedFromDeckFragment
+
         if (deckId != Long.MIN_VALUE) {
             viewModelScope.launch { _deck.value = repository.getDeck(deckId) }
         } else {
@@ -34,7 +37,7 @@ class EditDeckViewModel @Inject constructor(
         repository.saveDeck(
             Deck(deck.value?.deckId ?: 0, name, deck.value?.cardsCount ?: 0)
         )
-        _navigateBack.emit(Long.MIN_VALUE)
+        _navigateBackSkipDeckFragment.emit(false)
     }
 
 
@@ -42,7 +45,7 @@ class EditDeckViewModel @Inject constructor(
         _deck.value?.let {
             viewModelScope.launch {
                 repository.deleteDeck(it)
-                _navigateBack.emit(Long.MIN_VALUE)
+                _navigateBackSkipDeckFragment.emit(navigatedFromDeckFragment)
             }
         }
     }

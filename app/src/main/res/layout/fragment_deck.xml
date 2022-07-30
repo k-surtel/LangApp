@@ -13,6 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         tools:context=".ui.deck.DeckFragment">
 
         <com.google.android.material.card.MaterialCardView
@@ -51,12 +52,10 @@
 
                 <ImageButton
                     android:id="@+id/edit_button"
-                    android:layout_width="48dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/icon_edit"
+                    android:src="@drawable/icon_edit"
                     android:contentDescription="@string/edit"
-                    android:minWidth="48dp"
-                    android:minHeight="48dp"
                     android:text="@string/edit"
                     app:layout_constraintEnd_toStartOf="@id/learn_button"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -65,12 +64,10 @@
 
                 <ImageButton
                     android:id="@+id/learn_button"
-                    android:layout_width="48dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/icon_learn"
+                    android:src="@drawable/icon_learn"
                     android:contentDescription="@string/learn"
-                    android:minWidth="48dp"
-                    android:minHeight="48dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/edit_button"
                     app:layout_constraintTop_toBottomOf="@id/cards_count" />
@@ -83,10 +80,11 @@
             android:id="@+id/cards"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/deck_info"/>
+            app:layout_constraintTop_toBottomOf="@id/deck_info"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

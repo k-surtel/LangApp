@@ -29,7 +29,7 @@ class DeckFragment : Fragment() {
         val binding: FragmentDeckBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_deck, container, false)
 
-        val arguments = EditDeckFragmentArgs.fromBundle(requireArguments())
+        val arguments = DeckFragmentArgs.fromBundle(requireArguments())
         viewModel.processArguments(arguments.deckId)
 
         setHasOptionsMenu(true)
@@ -48,6 +48,18 @@ class DeckFragment : Fragment() {
             adapter.submitList(it)
         } }
         binding.cards.adapter = adapter
+
+        binding.editButton.setOnClickListener {
+            viewModel.deckId?.let {
+                navigate(DeckFragmentDirections.actionDeckFragmentToEditDeckFragment(it, true))
+            }
+        }
+
+        binding.learnButton.setOnClickListener {
+            viewModel.deckId?.let {
+                navigate(DeckFragmentDirections.actionDeckFragmentToFlashcardFragment(it))
+            }
+        }
 
         return binding.root
     }
@@ -69,7 +81,7 @@ class DeckFragment : Fragment() {
         R.id.action_edit -> {
             viewModel.deckId?.let {
                 navigate(DeckFragmentDirections
-                    .actionDeckFragmentToEditDeckFragment(it))
+                    .actionDeckFragmentToEditDeckFragment(it, true))
             }
             true
         }
