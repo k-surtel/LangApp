@@ -27,6 +27,10 @@ class LangRepositoryImpl(
         dao.insert(card)
     }
 
+    override suspend fun saveAllCards(cards: List<Card>) {
+        dao.insertAll(cards)
+    }
+
     override suspend fun deleteCard(card: Card) {
         dao.deleteCard(card.cardId)
     }

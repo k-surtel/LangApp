@@ -9,7 +9,6 @@
     <string name="right">Right</string>
     <string name="easy">Easy</string>
     <string name="edit">Edit</string>
-    <string name="import_txt_file">Import TXT file</string>
     <string name="front">Front</string>
     <string name="back">Back</string>
     <string name="learn">Learn</string>
@@ -22,4 +21,10 @@
     <string name="card_deleted">Card has been deleted</string>
     <string name="undo">Undo</string>
     <string name="this_deck_is_empty">This deck is empty</string>
+    <string name="no_file_selected">No file selected</string>
+    <string name="choose_file">Choose file</string>
+    <string name="cards_separator">Cards separator</string>
+    <string name="choose_cards_separator">Choose cards separator</string>
+    <string name="line_separator">Each line is a separate card content</string>
+    <string name="card_separator_label">or write a separator character:</string>
 </resources>

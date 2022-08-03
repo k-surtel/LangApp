@@ -6,6 +6,7 @@
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_edit.xml" value="0.1165" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_learn.xml" value="0.15" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/shape_fab_label.xml" value="0.144" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/dialog_choose_cards_separator.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/dialog_deck_actions.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fab_menu_list_of_decks.xml" value="0.19927536231884058" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_deck.xml" value="0.33" />
@@ -13,6 +14,7 @@
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_edit_card.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_edit_deck.xml" value="0.2151268115942029" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_flashcard.xml" value="0.22056159420289856" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_import.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_list_of_decks.xml" value="0.25" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/item_card.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/item_deck.xml" value="0.18802083333333333" />

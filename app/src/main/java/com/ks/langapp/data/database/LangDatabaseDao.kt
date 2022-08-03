@@ -4,22 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import androidx.room.Update
 import com.ks.langapp.data.database.entities.Card
 import com.ks.langapp.data.database.entities.Deck
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LangDatabaseDao {
-
-    @Insert
-    suspend fun insertAll(cards: List<Card>) //
-
-    @Update
-    suspend fun update(deck: Deck) //
-
-    @Query("DELETE FROM table_decks WHERE deckId = :key ")
-    suspend fun deleteDeck(key: Long) //
 
     @Query("DELETE FROM table_cards")
     suspend fun clearCards() //
@@ -32,7 +22,11 @@ interface LangDatabaseDao {
 
 
 
+    @Query("DELETE FROM table_decks WHERE deckId = :key ")
+    suspend fun deleteDeck(key: Long)
 
+    @Insert
+    suspend fun insertAll(cards: List<Card>)
 
     @Query("DELETE FROM table_cards WHERE deckId = :key ")
     suspend fun deleteCardsOfADeck(key: Long)

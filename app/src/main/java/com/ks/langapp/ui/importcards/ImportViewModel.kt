@@ -1,23 +1,82 @@
 package com.ks.langapp.ui.importcards
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.ContentResolver
+import android.net.Uri
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ks.langapp.data.database.LangDatabaseDao
 import com.ks.langapp.data.database.entities.Card
 import com.ks.langapp.data.database.entities.Deck
+import com.ks.langapp.data.repository.LangRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import javax.inject.Inject
 
-class ImportViewModel(val database: LangDatabaseDao, application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class ImportViewModel @Inject constructor(
+    private val repository: LangRepository
+) : ViewModel() {
 
-    fun onImportClicked() {
-        onImportExampleDeck()
+    private var cardsSeparatorIsNewLine = true
+    private var cardsSeparator: Char? = null
+
+    private var termsSeparator: Char = ';'
+
+    private val cards = mutableListOf<Card>()
+
+    fun processUri(uri: Uri, contentResolver: ContentResolver) {
+        val inputStreamReader = InputStreamReader(contentResolver.openInputStream(uri))
+        val bufferedReader = BufferedReader(inputStreamReader)
+        val stringBuilder = StringBuilder()
+        var textLine: String?
+        while (bufferedReader.readLine().also { textLine = it } != null) {
+            if(cardsSeparatorIsNewLine) textLine?.let { assembleCard(it) }
+            else stringBuilder.append(textLine)
+
+        }
+        val fileContent = stringBuilder.toString()
+        if(!cardsSeparatorIsNewLine) divideContentToCards(fileContent)
     }
 
-    fun onImportExampleDeck() {
+    private fun divideContentToCards(fileContent: String) {
+        cardsSeparator?.let {
+            val cardsContents = fileContent.split(it)
+            for (substring in cardsContents) { assembleCard(substring) }
+        }
+        //else  todo error message separator not set
+
+    }
+
+    private fun assembleCard(cardContent: String) {
+        val definitions = cardContent.split(termsSeparator)
+        cards.add(Card(Long.MIN_VALUE, Long.MIN_VALUE, definitions[0], definitions[1]))
+    }
+
+
+    fun onImportExampleClicked() {
         viewModelScope.launch {
             val deckId = insertDeck(Deck(0, "Example Deck", 26))
             prepareExampleList(deckId)
+        }
+    }
+
+    fun onImportClick() {
+        if (cards.isNotEmpty()) {
+            viewModelScope.launch {
+                val deckId = insertDeck(Deck(0, "Imported deck", cards.size))
+                saveCardsOfDeck(deckId)
+            }
+        } //else // todo error message
+    }
+
+    private fun saveCardsOfDeck(deckId: Long) {
+        for (card in cards) {
+            card.deckId = deckId
+        }
+
+        viewModelScope.launch {
+            insertCards(cards)
         }
     }
 
@@ -56,14 +115,6 @@ class ImportViewModel(val database: LangDatabaseDao, application: Application) :
         }
     }
 
-    fun importTextFile() {
-//        val intent = Intent()
-//            .setType("*/*")
-//            .setAction(Intent.ACTION_GET_CONTENT)
-//
-//        startActivityForResult(Intent.createChooser(intent, "Select a file"), 777)
-    }
-
-    private suspend fun insertDeck(deck: Deck): Long { return database.insert(deck) }
-    private suspend fun insertCards(cards: List<Card>) { database.insertAll(cards) }
+    private suspend fun insertDeck(deck: Deck): Long { return repository.saveDeck(deck) }
+    private suspend fun insertCards(cards: List<Card>) { repository.saveAllCards(cards) }
 }

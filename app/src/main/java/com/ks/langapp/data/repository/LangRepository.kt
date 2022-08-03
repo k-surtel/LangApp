@@ -14,6 +14,8 @@ interface LangRepository {
 
     suspend fun saveCard(card: Card)
 
+    suspend fun saveAllCards(cards: List<Card>)
+
     suspend fun deleteCard(card: Card)
 
     suspend fun getCard(cardId: Long): Card?
