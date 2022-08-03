@@ -35,8 +35,6 @@ class DeckFragment : Fragment() {
         val arguments = DeckFragmentArgs.fromBundle(requireArguments())
         viewModel.processArguments(arguments.deckId)
 
-        setHasOptionsMenu(true)
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -74,29 +72,5 @@ class DeckFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu_toolbar2, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.action_add -> {
-            viewModel.deck.value?.let {
-                navigate(DeckFragmentDirections
-                    .actionDeckFragmentToEditCardFragment(it.deckId, Long.MIN_VALUE))
-            }
-            true
-        }
-
-        R.id.action_edit -> {
-            viewModel.deck.value?.let {
-                navigate(DeckFragmentDirections
-                    .actionDeckFragmentToEditDeckFragment(it.deckId, true))
-            }
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
     }
 }

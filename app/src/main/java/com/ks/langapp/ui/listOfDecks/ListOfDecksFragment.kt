@@ -1,7 +1,6 @@
 package com.ks.langapp.ui.listOfDecks
 
 import android.app.AlertDialog
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.view.animation.AnimationUtils.loadAnimation
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -43,8 +41,6 @@ class ListOfDecksFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_list_of_decks, container, false)
 
-        setHasOptionsMenu(true)
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -54,35 +50,27 @@ class ListOfDecksFragment : Fragment() {
         lifecycleScope.launch { viewModel.decks.collectLatest { adapter.submitList(it) } }
         binding.decks.adapter = adapter
 
-        fabAppear.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                binding.fabAdd.visibility = View.INVISIBLE
-                binding.fabAddLabel.visibility = View.INVISIBLE
-                binding.fabImport.visibility = View.INVISIBLE
-                binding.fabImportLabel.visibility = View.INVISIBLE
-
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {}
-            override fun onAnimationRepeat(animation: Animation?) {}
-
-        })
-
         fabDisappear.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationEnd(animation: Animation?) {
-                binding.fabAdd.visibility = View.GONE
-                binding.fabAddLabel.visibility = View.GONE
-                binding.fabImport.visibility = View.GONE
-                binding.fabImportLabel.visibility = View.GONE
+                setFabViewsVisibility(View.GONE)
             }
-
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}
-
         })
 
         binding.fab.setOnClickListener {
             onFabClick()
+        }
+
+        binding.fabAdd.setOnClickListener {
+            fabMenuOpened = false
+            navigate(ListOfDecksFragmentDirections
+                .actionListOfDecksFragmentToEditDeckFragment(Long.MIN_VALUE, false))
+        }
+
+        binding.fabImport.setOnClickListener {
+            fabMenuOpened = false
+            navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToImportFragment())
         }
 
         return binding.root
@@ -113,30 +101,27 @@ class ListOfDecksFragment : Fragment() {
     private fun onFabClick() {
         if (fabMenuOpened) {
             binding.fab.startAnimation(fabCloseRotation)
-            binding.fabAdd.startAnimation(fabDisappear)
-            binding.fabAddLabel.startAnimation(fabDisappear)
-            binding.fabImport.startAnimation(fabDisappear)
-            binding.fabImportLabel.startAnimation(fabDisappear)
+            startFabsAnimations(fabDisappear)
         } else {
+            setFabViewsVisibility(View.INVISIBLE)
             binding.fab.startAnimation(fabOpenRotation)
-            binding.fabAdd.startAnimation(fabAppear)
-            binding.fabAddLabel.startAnimation(fabAppear)
-            binding.fabImport.startAnimation(fabAppear)
-            binding.fabImportLabel.startAnimation(fabAppear)
+            startFabsAnimations(fabAppear)
         }
 
         fabMenuOpened = !fabMenuOpened
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.action_add -> {
-            navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToEditDeckFragment(Long.MIN_VALUE, false))
-            true
-        }
-        R.id.action_import -> {
-            navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToImportFragment())
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
+    private fun setFabViewsVisibility(visibility: Int) {
+        binding.fabAdd.visibility = visibility
+        binding.fabAddLabel.visibility = visibility
+        binding.fabImport.visibility = visibility
+        binding.fabImportLabel.visibility = visibility
+    }
+
+    private fun startFabsAnimations(animation: Animation) {
+        binding.fabAdd.startAnimation(animation)
+        binding.fabAddLabel.startAnimation(animation)
+        binding.fabImport.startAnimation(animation)
+        binding.fabImportLabel.startAnimation(animation)
     }
 }
