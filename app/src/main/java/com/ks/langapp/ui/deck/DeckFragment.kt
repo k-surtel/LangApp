@@ -41,7 +41,8 @@ class DeckFragment : Fragment() {
         val adapter = CardsAdapter(CardsListener { card ->
             viewModel.deck.value?.let {
                 viewModel.editedCard = card
-                navigate(DeckFragmentDirections.actionDeckFragmentToEditCardFragment(it.deckId, card.cardId))
+                navigate(DeckFragmentDirections
+                    .actionDeckFragmentToEditCardFragment(it.deckId, card.cardId))
             }
         })
         lifecycleScope.launch { viewModel.cards.collectLatest {
@@ -53,13 +54,17 @@ class DeckFragment : Fragment() {
 
         binding.editButton.setOnClickListener {
             viewModel.deck.value?.let {
-                navigate(DeckFragmentDirections.actionDeckFragmentToEditDeckFragment(it.deckId, true))
+                navigate(DeckFragmentDirections
+                    .actionDeckFragmentToEditDeckFragment(it.deckId, true))
             }
         }
 
         binding.learnButton.setOnClickListener {
             viewModel.deck.value?.let {
-                navigate(DeckFragmentDirections.actionDeckFragmentToFlashcardFragment(it.deckId))
+                if (it.cardsCount > 0) navigate(DeckFragmentDirections
+                    .actionDeckFragmentToFlashcardFragment(it.deckId))
+                else Snackbar.make(requireView(), R.string.this_deck_is_empty, Snackbar.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -68,6 +73,13 @@ class DeckFragment : Fragment() {
                 Snackbar.make(requireView(), R.string.card_deleted, Snackbar.LENGTH_LONG)
                     .setAction(R.string.undo) { viewModel.undoCardDeletion(card) }
                     .show()
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            viewModel.deck.value?.let {
+                navigate(DeckFragmentDirections
+                    .actionDeckFragmentToEditCardFragment(it.deckId, Long.MIN_VALUE))
             }
         }
 

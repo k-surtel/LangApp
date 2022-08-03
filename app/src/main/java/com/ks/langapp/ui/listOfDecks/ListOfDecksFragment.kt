@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.ks.langapp.R
 import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.databinding.FragmentListOfDecksBinding
@@ -87,8 +88,12 @@ class ListOfDecksFragment : Fragment() {
                 0 -> navigate(ListOfDecksFragmentDirections
                     .actionListOfDecksFragmentToDeckFragment(deck.deckId))
 
-                1 -> navigate(ListOfDecksFragmentDirections
-                    .actionListOfDecksFragmentToFlashcardFragment(deck.deckId))
+                1 -> {
+                    if (deck.cardsCount > 0) navigate(ListOfDecksFragmentDirections
+                        .actionListOfDecksFragmentToFlashcardFragment(deck.deckId))
+                    else Snackbar.make(requireView(), R.string.this_deck_is_empty, Snackbar.LENGTH_SHORT)
+                        .show()
+                }
 
                 2 -> navigate(ListOfDecksFragmentDirections
                     .actionListOfDecksFragmentToEditDeckFragment(deck.deckId, false))
