@@ -11,17 +11,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface LangDatabaseDao {
 
-    @Query("DELETE FROM table_cards")
-    suspend fun clearCards() //
-
-    @Query("DELETE FROM table_decks")
-    suspend fun clearDecks() //
-
-    @Query("SELECT * FROM table_cards ORDER BY cardId DESC LIMIT 1")
-    suspend fun getLastCard(): Card? //
-
-
-
     @Query("DELETE FROM table_decks WHERE deckId = :key ")
     suspend fun deleteDeck(key: Long)
 

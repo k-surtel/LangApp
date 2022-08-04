@@ -5,19 +5,14 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.ks.langapp.R
-import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentDeckBinding
 import com.ks.langapp.ui.adapters.CardsAdapter
 import com.ks.langapp.ui.adapters.CardsListener
-import com.ks.langapp.ui.editdeck.EditDeckFragmentArgs
 import com.ks.langapp.ui.utils.navigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

@@ -1,6 +1,5 @@
 package com.ks.langapp.data.repository
 
-import android.util.Log
 import com.ks.langapp.data.database.LangDatabaseDao
 import com.ks.langapp.data.database.entities.Card
 import com.ks.langapp.data.database.entities.Deck

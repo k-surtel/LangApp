@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.ks.langapp.R
-import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.databinding.FragmentFlashcardBinding
 import dagger.hilt.android.AndroidEntryPoint
 

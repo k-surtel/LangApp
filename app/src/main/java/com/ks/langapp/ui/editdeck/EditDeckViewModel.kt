@@ -40,7 +40,6 @@ class EditDeckViewModel @Inject constructor(
         _navigateBackSkipDeckFragment.emit(false)
     }
 
-
     fun onDeleteDeck() {
         _deck.value?.let {
             viewModelScope.launch {

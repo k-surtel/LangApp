@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.ks.langapp.R
-import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.databinding.FragmentImportBinding
-import com.ks.langapp.ui.listOfDecks.ListOfDecksFragmentDirections
-import com.ks.langapp.ui.utils.navigate
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class ImportFragment : Fragment() {

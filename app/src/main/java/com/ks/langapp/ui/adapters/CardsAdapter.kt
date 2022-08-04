@@ -37,9 +37,6 @@ class CardsAdapter(private val clickListener: CardsListener) :
             }
         }
     }
-
-
-
 }
 
 class ItemsDiffCallback : DiffUtil.ItemCallback<Card>() {

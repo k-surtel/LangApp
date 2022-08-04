@@ -1,4 +1,4 @@
-package com.ks.langapp.ui.utils
+package com.ks.langapp.ui.adapters
 
 import android.view.View
 import androidx.databinding.BindingAdapter
