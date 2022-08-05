@@ -5,7 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.database.entities.CardStats
 import com.ks.langapp.data.database.entities.Deck
+import com.ks.langapp.data.database.entities.DeckStats
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -40,4 +42,16 @@ interface LangDatabaseDao {
 
     @Query("SELECT * FROM table_decks ORDER BY deckId DESC")
     fun getAllDecks(): Flow<List<Deck>>
+
+    @Query("SELECT * FROM table_card_stats WHERE deckId = :key ")
+     suspend fun getCardStatsOfADeck(key: Long): List<CardStats>
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertCardStatsList(cardStats: List<CardStats>)
+
+    @Insert
+    suspend fun insert(deckStats: DeckStats)
+
+    @Query("SELECT * FROM table_deck_stats")
+    suspend fun getDeckStats(): List<DeckStats>
 }

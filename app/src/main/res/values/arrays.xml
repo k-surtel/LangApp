@@ -4,5 +4,6 @@
         <item>Show deck</item>
         <item>Learn</item>
         <item>Edit deck</item>
+        <item>Deck stats</item>
     </string-array>
 </resources>

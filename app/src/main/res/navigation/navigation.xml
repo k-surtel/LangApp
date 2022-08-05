@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_listOfDecksFragment_to_editDeckFragment"
             app:destination="@id/editDeckFragment" />
+        <action
+            android:id="@+id/action_listOfDecksFragment_to_deckStatsFragment"
+            app:destination="@id/deckStatsFragment" />
     </fragment>
 
     <fragment
@@ -79,5 +82,9 @@
         android:id="@+id/importFragment"
         android:label="ImportFragment"
         android:name="com.ks.langapp.ui.importcards.ImportFragment" />
+    <fragment
+        android:id="@+id/deckStatsFragment"
+        android:name="com.ks.langapp.ui.deck_stats.DeckStatsFragment"
+        android:label="DeckStatsFragment" />
 
-    </navigation>
+</navigation>

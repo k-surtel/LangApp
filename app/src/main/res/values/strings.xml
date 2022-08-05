@@ -27,4 +27,5 @@
     <string name="choose_cards_separator">Choose cards separator</string>
     <string name="line_separator">Each line is a separate card content</string>
     <string name="card_separator_label">or write a separator character:</string>
+    <string name="time_label">Time spent learning:</string>
 </resources>

@@ -80,7 +80,7 @@ class ListOfDecksFragment : Fragment() {
         builder.setTitle(deck.name)
         builder.setItems(
             R.array.dialog_deck_actions
-        ) { dialog, which ->
+        ) { _, which ->
 
             when (which) {
                 0 -> navigate(ListOfDecksFragmentDirections
@@ -95,6 +95,8 @@ class ListOfDecksFragment : Fragment() {
 
                 2 -> navigate(ListOfDecksFragmentDirections
                     .actionListOfDecksFragmentToEditDeckFragment(deck.deckId, false))
+
+                3 -> navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToDeckStatsFragment())
             }
         }
         val dialog = builder.create()
