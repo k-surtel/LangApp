@@ -17,12 +17,12 @@
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/white"
         android:onClick="@{() -> clickListener.onClick(deck)}"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="@dimen/margin_small"
+        app:cardCornerRadius="@dimen/card_corner_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/deck_name"
@@ -30,8 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{deck.name}"
                 android:textSize="14sp"
-                android:padding="10dp"
-                android:layout_marginStart="8dp"
+                android:padding="@dimen/margin_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -42,8 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{String.valueOf(deck.cardsCount)}"
                 android:textSize="14sp"
-                android:padding="10dp"
-                android:layout_marginEnd="8dp"
+                android:padding="@dimen/margin_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,14 +49,4 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:onClick="@{() -> clickListener.onClick(0, deck)}"-->
-<!--        app:cardBackgroundColor="@color/purple_200"-->
-<!--        app:cardCornerRadius="10dp"-->
-<!--        app:contentPadding="10dp">-->
-
-
 </layout>

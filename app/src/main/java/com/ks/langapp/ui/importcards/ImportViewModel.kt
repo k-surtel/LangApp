@@ -50,7 +50,7 @@ class ImportViewModel @Inject constructor(
 
     private fun assembleCard(cardContent: String) {
         val definitions = cardContent.split(termsSeparator)
-        cards.add(Card(Long.MIN_VALUE, Long.MIN_VALUE, definitions[0], definitions[1]))
+        cards.add(Card(0, Long.MIN_VALUE, definitions[0], definitions[1]))
     }
 
 
