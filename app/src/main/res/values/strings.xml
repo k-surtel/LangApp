@@ -28,4 +28,7 @@
     <string name="line_separator">Each line is a separate card content</string>
     <string name="card_separator_label">or write a separator character:</string>
     <string name="time_label">Time spent learning:</string>
+    <string name="first_term_is">First term is:</string>
+    <string name="terms_separator">Terms separator</string>
+    <string name="example">Example:</string>
 </resources>

@@ -8,6 +8,8 @@ import com.ks.langapp.data.database.entities.Card
 import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.data.repository.LangRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -18,12 +20,17 @@ class ImportViewModel @Inject constructor(
     private val repository: LangRepository
 ) : ViewModel() {
 
-    private var cardsSeparatorIsNewLine = true
-    private var cardsSeparator: Char? = null
+    private val _firstTerm = MutableStateFlow<String>("FRONT")
+    val firstTerm: StateFlow<String> = _firstTerm
 
-    private var termsSeparator: Char = ';'
+    private val _termsSeparator = MutableStateFlow<Separator>(Separator.CharSeparator(';'))
+    val termsSeparator: StateFlow<Separator> = _termsSeparator
+
+    private val _cardsSeparator = MutableStateFlow<Separator>(Separator.NewLine)
+    val cardsSeparator: StateFlow<Separator> = _cardsSeparator
 
     private val cards = mutableListOf<Card>()
+
 
     fun processUri(uri: Uri, contentResolver: ContentResolver) {
         val inputStreamReader = InputStreamReader(contentResolver.openInputStream(uri))
@@ -31,25 +38,23 @@ class ImportViewModel @Inject constructor(
         val stringBuilder = StringBuilder()
         var textLine: String?
         while (bufferedReader.readLine().also { textLine = it } != null) {
-            if(cardsSeparatorIsNewLine) textLine?.let { assembleCard(it) }
+            if(cardsSeparator.value is Separator.NewLine) textLine?.let { assembleCard(it) }
             else stringBuilder.append(textLine)
 
         }
         val fileContent = stringBuilder.toString()
-        if(!cardsSeparatorIsNewLine) divideContentToCards(fileContent)
+        if(cardsSeparator.value !is Separator.NewLine) divideContentToCards(fileContent)
     }
 
     private fun divideContentToCards(fileContent: String) {
-        cardsSeparator?.let {
-            val cardsContents = fileContent.split(it)
-            for (substring in cardsContents) { assembleCard(substring) }
-        }
+        val cardsContents = fileContent.split(';') //todo
+        for (substring in cardsContents) { assembleCard(substring) }
         //else  todo error message separator not set
 
     }
 
     private fun assembleCard(cardContent: String) {
-        val definitions = cardContent.split(termsSeparator)
+        val definitions = cardContent.split(';') //todo
         cards.add(Card(0, Long.MIN_VALUE, definitions[0], definitions[1]))
     }
 
@@ -117,4 +122,9 @@ class ImportViewModel @Inject constructor(
 
     private suspend fun insertDeck(deck: Deck): Long { return repository.saveDeck(deck) }
     private suspend fun insertCards(cards: List<Card>) { repository.saveAllCards(cards) }
+
+    sealed class Separator(char: Char?) {
+        class CharSeparator(val char: Char) : Separator(char)
+        object NewLine : Separator(null)
+    }
 }

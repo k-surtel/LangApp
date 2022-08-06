@@ -34,13 +34,43 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
-            android:id="@+id/cards_separator_label"
+            android:id="@+id/first_term_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/cards_separator"
+            android:text="@string/first_term_is"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/choose_file_button" />
+
+        <Button
+            android:id="@+id/first_term"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/first_term_label"/>
+
+        <TextView
+            android:id="@+id/terms_separator_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/terms_separator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/first_term" />
+
+        <Button
+            android:id="@+id/terms_separator_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/terms_separator_label"/>
+
+        <TextView
+            android:id="@+id/cards_separator_label"
+            android:text="@string/cards_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/terms_separator_button"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <Button
             android:id="@+id/cards_separator_button"
@@ -48,21 +78,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cards_separator_label"/>
-
-        <TextView
-            android:id="@+id/term_definition_separator_label"
-            android:text="@string/cards_separator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/cards_separator_button"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <Button
-            android:id="@+id/term_definition_separator_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/term_definition_separator_label"/>
 
         <Button
             android:id="@+id/import_button"
@@ -83,6 +98,46 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/example_label"
+            android:text="@string/example"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cards_separator_button"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/example_first_term"
+            android:text="@{viewModel.firstTerm}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/example_label"/>
+
+        <TextView
+            android:id="@+id/example_terms_separator"
+            separatorText="@{viewModel.termsSeparator}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/example_first_term"
+            app:layout_constraintTop_toBottomOf="@id/example_label"/>
+
+        <TextView
+            android:id="@+id/example_second_term"
+            android:text="@{viewModel.firstTerm}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/example_terms_separator"
+            app:layout_constraintTop_toBottomOf="@id/example_label"/>
+
+        <TextView
+            android:id="@+id/example_cards_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/example_second_term"
+            app:layout_constraintTop_toBottomOf="@id/example_label"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
