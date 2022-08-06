@@ -1,4 +1,4 @@
-package com.ks.langapp.ui.deck_stats
+package com.ks.langapp.ui.stats
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -11,7 +11,7 @@ import kotlin.math.floor
 
 
 @HiltViewModel
-class DeckStatsViewModel @Inject constructor(
+class StatsViewModel @Inject constructor(
     private val repository: LangRepository
 ) : ViewModel() {
 
