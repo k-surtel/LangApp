@@ -5,14 +5,20 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.ks.langapp.R
 import com.ks.langapp.databinding.FragmentImportBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +40,8 @@ class ImportFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val fileResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val fileResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
                     data?.data?.let {
@@ -47,7 +54,9 @@ class ImportFragment : Fragment() {
             openFile(fileResultLauncher, null)
         }
 
-        binding.cardsSeparatorButton.setOnClickListener { onCardsSeparatorClick() }
+        binding.termsSeparatorButton.setOnClickListener { onSeparatorButtonClick(ImportViewModel.SeparatorType.TERMS) }
+
+        binding.cardsSeparatorButton.setOnClickListener { onSeparatorButtonClick(ImportViewModel.SeparatorType.CARDS) }
 
         return binding.root
     }
@@ -65,11 +74,33 @@ class ImportFragment : Fragment() {
         resultLauncher.launch(intent)
     }
 
-    private fun onCardsSeparatorClick() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.choose_cards_separator))
-        builder.setView(R.layout.dialog_choose_cards_separator)
-        val dialog = builder.create()
-        dialog.show()
+    private fun onSeparatorButtonClick(separatorType: ImportViewModel.SeparatorType) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_choose_separator, null)
+
+        val radioGroup = dialogView.findViewById<RadioGroup>(R.id.radio_group)
+        val editText = dialogView.findViewById<EditText>(R.id.character)
+
+        editText.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) radioGroup.check(R.id.character_radio)
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.choose_separator)
+            .setView(dialogView)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                when (radioGroup.checkedRadioButtonId) {
+                    R.id.new_line_radio -> viewModel.onSeparatorChange(separatorType, ImportViewModel.Separator.NewLine)
+                    R.id.character_radio -> {
+                        if (editText.text.isNullOrEmpty()) {
+                            Snackbar.make(requireView(), R.string.char_field_is_empty, Snackbar.LENGTH_SHORT).show()
+                            return@setPositiveButton
+                        }
+                        viewModel.onSeparatorChange(separatorType, ImportViewModel.Separator.CharSeparator(editText.text[0]))
+                    }
+                }
+            }
+            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            .setCancelable(true)
+            .show()
     }
 }

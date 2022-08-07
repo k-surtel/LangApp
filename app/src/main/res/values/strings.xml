@@ -24,11 +24,13 @@
     <string name="no_file_selected">No file selected</string>
     <string name="choose_file">Choose file</string>
     <string name="cards_separator">Cards separator</string>
-    <string name="choose_cards_separator">Choose cards separator</string>
-    <string name="line_separator">Each line is a separate card content</string>
-    <string name="card_separator_label">or write a separator character:</string>
+    <string name="choose_separator">Choose separator</string>
+    <string name="new_line">New line</string>
+    <string name="separator_character">separator character:</string>
     <string name="time_label">Time spent learning:</string>
     <string name="first_term_is">First term is:</string>
     <string name="terms_separator">Terms separator</string>
     <string name="example">Example:</string>
+    <string name="ok">OK</string>
+    <string name="char_field_is_empty">Char field is empty</string>
 </resources>

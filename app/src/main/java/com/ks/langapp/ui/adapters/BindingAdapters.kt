@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.ks.langapp.ui.importcards.ImportViewModel
+import com.ks.langapp.ui.importcards.ImportViewModel.*
 
 @BindingAdapter("setVisibility")
 fun setVisibility(view : View, visible : Boolean) {
@@ -11,13 +12,21 @@ fun setVisibility(view : View, visible : Boolean) {
 }
 
 @BindingAdapter("separatorText")
-fun separatorText(view : View, separator: ImportViewModel.Separator) {
+fun separatorText(view : View, separator: Separator) {
     (view as TextView).text = when (separator) {
-        is ImportViewModel.Separator.CharSeparator -> {
+        is Separator.CharSeparator -> {
             separator.char.toString()
         }
-        is ImportViewModel.Separator.NewLine -> {
+        is Separator.NewLine -> {
             "<NEW LINE>"
         }
+    }
+}
+
+@BindingAdapter("otherTermText")
+fun otherTermText(view : View, term : Term) {
+    (view as TextView).text = when (term) {
+        Term.FRONT -> "BACK"
+        Term.BACK -> "FRONT"
     }
 }

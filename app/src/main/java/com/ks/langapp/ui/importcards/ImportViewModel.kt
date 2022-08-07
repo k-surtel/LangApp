@@ -20,8 +20,8 @@ class ImportViewModel @Inject constructor(
     private val repository: LangRepository
 ) : ViewModel() {
 
-    private val _firstTerm = MutableStateFlow<String>("FRONT")
-    val firstTerm: StateFlow<String> = _firstTerm
+    private val _firstTerm = MutableStateFlow(Term.FRONT)
+    val firstTerm: StateFlow<Term> = _firstTerm
 
     private val _termsSeparator = MutableStateFlow<Separator>(Separator.CharSeparator(';'))
     val termsSeparator: StateFlow<Separator> = _termsSeparator
@@ -31,6 +31,20 @@ class ImportViewModel @Inject constructor(
 
     private val cards = mutableListOf<Card>()
 
+
+    fun onFirstTermButtonClick() {
+        _firstTerm.value = when (firstTerm.value) {
+            Term.FRONT -> Term.BACK
+            Term.BACK -> Term.FRONT
+        }
+    }
+
+    fun onSeparatorChange(separatorType: SeparatorType, separator: Separator) {
+        when (separatorType) {
+            SeparatorType.TERMS -> _termsSeparator.value = separator
+            SeparatorType.CARDS -> _cardsSeparator.value = separator
+        }
+    }
 
     fun processUri(uri: Uri, contentResolver: ContentResolver) {
         val inputStreamReader = InputStreamReader(contentResolver.openInputStream(uri))
@@ -123,8 +137,16 @@ class ImportViewModel @Inject constructor(
     private suspend fun insertDeck(deck: Deck): Long { return repository.saveDeck(deck) }
     private suspend fun insertCards(cards: List<Card>) { repository.saveAllCards(cards) }
 
+    enum class Term {
+        FRONT, BACK
+    }
+
     sealed class Separator(char: Char?) {
         class CharSeparator(val char: Char) : Separator(char)
         object NewLine : Separator(null)
+    }
+
+    enum class SeparatorType {
+        TERMS, CARDS
     }
 }
