@@ -20,7 +20,7 @@
             android:id="@+id/file_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_file_selected"
+            android:text="@{viewModel.fileName}"
             app:layout_constraintBottom_toBottomOf="@+id/choose_file_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/choose_file_button" />
@@ -33,14 +33,30 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/deck_name_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/deck_name"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/choose_file_button">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/deck_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/first_term_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/first_term_is"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/choose_file_button" />
+            app:layout_constraintTop_toBottomOf="@id/deck_name_layout" />
 
         <Button
             android:id="@+id/first_term_button"
@@ -48,6 +64,7 @@
             android:onClick="@{() -> viewModel.onFirstTermButtonClick()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/first_term_label"/>
 
@@ -64,6 +81,7 @@
             separatorText="@{viewModel.termsSeparator}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/terms_separator_label"/>
 
@@ -80,13 +98,13 @@
             separatorText="@{viewModel.cardsSeparator}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cards_separator_label"/>
 
         <Button
             android:id="@+id/import_button"
             android:text="@string/import_"
-            android:onClick="@{() -> viewModel.onImportClick()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"

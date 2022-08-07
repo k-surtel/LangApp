@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.data.repository.LangRepository
 import com.ks.langapp.data.repository.LangRepositoryImpl
+import com.ks.langapp.ui.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +34,10 @@ object AppModule {
     fun provideLangRepository(
         database: LangDatabase
     ): LangRepository = LangRepositoryImpl(database.langDatabaseDao)
+
+    @Provides
+    @Singleton
+    fun provideResourceProvider(
+        @ApplicationContext context: Context
+    ): ResourceProvider = ResourceProvider(context)
 }

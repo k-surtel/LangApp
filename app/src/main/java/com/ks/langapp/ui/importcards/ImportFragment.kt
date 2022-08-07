@@ -17,11 +17,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ks.langapp.R
 import com.ks.langapp.databinding.FragmentImportBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ImportFragment : Fragment() {
@@ -57,6 +61,16 @@ class ImportFragment : Fragment() {
         binding.termsSeparatorButton.setOnClickListener { onSeparatorButtonClick(ImportViewModel.SeparatorType.TERMS) }
 
         binding.cardsSeparatorButton.setOnClickListener { onSeparatorButtonClick(ImportViewModel.SeparatorType.CARDS) }
+
+        binding.importButton.setOnClickListener {
+            viewModel.onImportClick(binding.deckName.text.toString()) // todo validation
+        }
+
+        lifecycleScope.launch {
+            viewModel.navigateBack.collectLatest {
+                if (it) findNavController().popBackStack()
+            }
+        }
 
         return binding.root
     }
