@@ -66,6 +66,10 @@ dependencies {
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
 
+    // Charts
+    //implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'im.dacer:AndroidCharts:1.0.4'
+
     // Test
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

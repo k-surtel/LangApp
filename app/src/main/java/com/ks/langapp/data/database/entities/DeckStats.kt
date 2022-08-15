@@ -15,8 +15,11 @@ data class DeckStats(
     val deckId: Long,
 
     @ColumnInfo
-    var date: Date,
+    val date: Date,
 
     @ColumnInfo
-    var time: Long
+    val time: Long,
+
+    @ColumnInfo
+    val cardsReviewed: Int
 )

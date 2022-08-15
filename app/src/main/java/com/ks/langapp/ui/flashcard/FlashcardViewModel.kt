@@ -22,6 +22,8 @@ class FlashcardViewModel @Inject constructor(
     private val repository: LangRepository
     ) : ViewModel() {
 
+    private var cardsReviewed: Int = 0
+
     private val  _cards = MutableStateFlow<List<Card>>(listOf())
     val cards: StateFlow<List<Card>> = _cards
 
@@ -102,6 +104,8 @@ class FlashcardViewModel @Inject constructor(
     }
 
     private fun setCurrentCardStats(ease: Int) {
+        cardsReviewed++
+
         var cardStat = cardStats.find { it.cardId == currentCard.value!!.cardId }
 
         if (cardStat == null) {
@@ -131,7 +135,8 @@ class FlashcardViewModel @Inject constructor(
                 0,
                 currentCard.value!!.deckId,
                 Calendar.getInstance().time,
-                timeDifference
+                timeDifference,
+                cardsReviewed
             ))
         }
     }

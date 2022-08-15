@@ -32,7 +32,7 @@ class StatsViewModel @Inject constructor(
 
                 Log.d("LANGUS", "time: ${stat.time}")
                 Log.d("LANGUS", "DECKID: ${stat.deckId}, DATE: ${stat.date}, " +
-                        "TIME: ${hh.toInt()}:${mm.toInt()}:${ss.toInt()}")
+                        "TIME: ${hh.toInt()}:${mm.toInt()}:${ss.toInt()}, NR OF CARDS: ${stat.cardsReviewed}")
             }
         }
     }
