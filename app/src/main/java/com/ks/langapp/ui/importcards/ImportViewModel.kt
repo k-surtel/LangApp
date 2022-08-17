@@ -27,11 +27,14 @@ class ImportViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider
 ) : ViewModel() {
 
-    private val _navigateBack = MutableSharedFlow<Boolean>()
-    val navigateBack: SharedFlow<Boolean> = _navigateBack
+    private val _event = MutableSharedFlow<ImportEvent>()
+    val event: SharedFlow<ImportEvent> = _event
 
     private val _fileName = MutableStateFlow(resourceProvider.getString(R.string.no_file_selected))
     val fileName: StateFlow<String> = _fileName
+
+    private val _deck = MutableStateFlow<Deck?>(null)
+    val deck: StateFlow<Deck?> = _deck
 
     private val _firstTerm = MutableStateFlow(Term.FRONT)
     val firstTerm: StateFlow<Term> = _firstTerm
@@ -44,6 +47,13 @@ class ImportViewModel @Inject constructor(
 
     private val cards = mutableListOf<Card>()
 
+    private var fileContent = ""
+
+    fun getAllDecks() = repository.getAllDecks()
+
+    fun chooseDeck(deck: Deck) {
+        _deck.value = deck
+    }
 
     fun onFirstTermButtonClick() {
         _firstTerm.value = when (firstTerm.value) {
@@ -67,12 +77,11 @@ class ImportViewModel @Inject constructor(
         val stringBuilder = StringBuilder()
         var textLine: String?
         while (bufferedReader.readLine().also { textLine = it } != null) {
-            if (cardsSeparator.value is Separator.NewLine) textLine?.let { assembleCard(it) }
-            else stringBuilder.append(textLine)
-
+                stringBuilder.append(textLine)
+                stringBuilder.append("\r\n")
         }
         val fileContent = stringBuilder.toString()
-        if (cardsSeparator.value !is Separator.NewLine) divideContentToCards(fileContent)
+        this.fileContent = fileContent
     }
 
     @SuppressLint("Range")
@@ -85,90 +94,68 @@ class ImportViewModel @Inject constructor(
         _fileName.value = fileName
     }
 
-    private fun divideContentToCards(fileContent: String) {
-        val cardsContents = fileContent.split(';') //todo
-        for (substring in cardsContents) {
-            assembleCard(substring)
-        }
-        //else  todo error message separator not set
-
-    }
-
-    private fun assembleCard(cardContent: String) {
-        val definitions = cardContent.split(';') //todo
-        cards.add(Card(0, Long.MIN_VALUE, definitions[0], definitions[1]))
-    }
-
-
-    fun onImportExampleClicked() {
-        viewModelScope.launch {
-            val deckId = insertDeck(Deck(0, "Example Deck", 26))
-            prepareExampleList(deckId)
-            _navigateBack.emit(true)
+    fun onImportClick() {
+        if (validateData()) {
+            processFile()
+            if (cards.isNotEmpty()) {
+                updateCardsCount()
+                saveCards()
+                viewModelScope.launch { _event.emit(ImportEvent.NAVIGATE_BACK) }
+            } else viewModelScope.launch { _event.emit(ImportEvent.NO_CARDS_CREATED) }
         }
     }
 
-    fun onImportClick(name: String) {
-        if (cards.isNotEmpty()) {
-            viewModelScope.launch {
-                val deckId = insertDeck(Deck(0, name, cards.size))
-                saveCardsOfDeck(deckId)
-                _navigateBack.emit(true)
-            }
-        } //else // todo error message
+    private fun validateData(): Boolean {
+        return if (fileName.equals(resourceProvider.getString(R.string.no_file_selected))) {
+            viewModelScope.launch { _event.emit(ImportEvent.NO_FILE_SELECTED) }
+            false
+        } else if (fileContent.isBlank()) {
+            viewModelScope.launch { _event.emit(ImportEvent.BAD_FILE) }
+            false
+        } else if (deck.value == null) {
+            viewModelScope.launch { _event.emit(ImportEvent.NO_DECK_SELECTED) }
+            false
+        } else true
     }
 
-    private fun saveCardsOfDeck(deckId: Long) {
-        for (card in cards) {
-            card.deckId = deckId
+    private fun processFile() {
+        val cardContents = when (cardsSeparator.value) {
+            is Separator.NewLine -> fileContent.split("\r?\n|\r".toRegex()).toList()
+            is Separator.CharSeparator ->
+                fileContent.split((cardsSeparator.value as Separator.CharSeparator).char).toList()
         }
-
-        viewModelScope.launch {
-            insertCards(cards)
-        }
+        for (cardContent in cardContents) createACard(cardContent)
     }
 
-    fun prepareExampleList(deckId: Long) {
-        val exampleList = listOf(
-            Card(0, deckId, "знать", "to know, be aware"),
-            Card(0, deckId, "мой", "my, mine"),
-            Card(0, deckId, "до", "to, up to, about, before"),
-            Card(0, deckId, "или", "or"),
-            Card(0, deckId, "если", "if"),
-            Card(0, deckId, "время", "time, season"),
-            Card(0, deckId, "рука", "hand, arm"),
-            Card(0, deckId, "нет", "no, not, but"),
-            Card(0, deckId, "самый", "most, the very, the same"),
-            Card(0, deckId, "большой", "big, large, important"),
-            Card(0, deckId, "даже", "even"),
-            Card(0, deckId, "наш", "our, ours"),
-            Card(0, deckId, "где", "where"),
-            Card(0, deckId, "дело", "business, affair, matter"),
-            Card(0, deckId, "там", "there, then"),
-            Card(0, deckId, "глаз", "eye, sight"),
-            Card(0, deckId, "жизнь", "life"),
-            Card(0, deckId, "день", "day"),
-            Card(0, deckId, "ничто", "nothing"),
-            Card(0, deckId, "потом", "afterwards, then"),
-            Card(0, deckId, "очень", "very"),
-            Card(0, deckId, "голова", "head, mind, brains"),
-            Card(0, deckId, "без", "without"),
-            Card(0, deckId, "видеть", "to see"),
-            Card(0, deckId, "друг", "friend"),
-            Card(0, deckId, "дом", "house, home")
-        )
+    private fun createACard(cardContent: String) {
+        val terms = when (termsSeparator.value) {
+            is Separator.NewLine -> cardContent.split("\r?\n|\r".toRegex()).toList()
+            is Separator.CharSeparator ->
+                cardContent.split((termsSeparator.value as Separator.CharSeparator).char).toList()
+        }
 
-        viewModelScope.launch {
-            insertCards(exampleList)
+        if (terms.size == 2 && deck.value != null) {
+            val card = if (firstTerm.value == Term.FRONT) Card(0, deck.value!!.deckId, terms[0], terms[1])
+            else Card(0, deck.value!!.deckId, terms[1], terms[0])
+
+            cards.add(card)
         }
     }
 
-    private suspend fun insertDeck(deck: Deck): Long {
-        return repository.saveDeck(deck)
-    }
-
-    private suspend fun insertCards(cards: List<Card>) {
+    private fun saveCards() = viewModelScope.launch {
         repository.saveAllCards(cards)
+    }
+
+    private fun updateCardsCount() = viewModelScope.launch {
+        deck.value?.let {
+            repository.saveDeck(it.copy(
+                cardsCount = it.cardsCount + cards.size
+            ))
+        }
+    }
+
+    fun saveDeck(deckName: String) = viewModelScope.launch {
+        repository.saveDeck(Deck(name = deckName))
     }
 
     enum class Term {
@@ -182,5 +169,9 @@ class ImportViewModel @Inject constructor(
 
     enum class SeparatorType {
         TERMS, CARDS
+    }
+
+    enum class ImportEvent {
+        NAVIGATE_BACK, NO_FILE_SELECTED, BAD_FILE, NO_DECK_SELECTED, NO_CARDS_CREATED
     }
 }

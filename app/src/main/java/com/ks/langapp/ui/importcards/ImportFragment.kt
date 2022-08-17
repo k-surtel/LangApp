@@ -1,17 +1,14 @@
 package com.ks.langapp.ui.importcards
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
@@ -54,36 +51,73 @@ class ImportFragment : Fragment() {
                 }
             }
 
-        binding.chooseFileButton.setOnClickListener {
-            openFile(fileResultLauncher, null)
-        }
+        binding.chooseFileButton.setOnClickListener { openFile(fileResultLauncher) }
+
+        binding.chooseDeckButton.setOnClickListener { onChooseDeck() }
 
         binding.termsSeparatorButton.setOnClickListener { onSeparatorButtonClick(ImportViewModel.SeparatorType.TERMS) }
 
         binding.cardsSeparatorButton.setOnClickListener { onSeparatorButtonClick(ImportViewModel.SeparatorType.CARDS) }
 
-        binding.importButton.setOnClickListener {
-            viewModel.onImportClick(binding.deckName.text.toString()) // todo validation
-        }
+        binding.importButton.setOnClickListener { viewModel.onImportClick() }
 
         lifecycleScope.launch {
-            viewModel.navigateBack.collectLatest {
-                if (it) findNavController().popBackStack()
+            viewModel.event.collectLatest {
+                when (it) {
+                    ImportViewModel.ImportEvent.NAVIGATE_BACK ->
+                        findNavController().popBackStack()
+                    ImportViewModel.ImportEvent.NO_FILE_SELECTED ->
+                        showNoFileSelectedMessage()
+                    ImportViewModel.ImportEvent.BAD_FILE ->
+                        showBadFileMessage()
+                    ImportViewModel.ImportEvent.NO_CARDS_CREATED ->
+                        showBadFileMessage()
+                    ImportViewModel.ImportEvent.NO_DECK_SELECTED ->
+                        showNoDeckSelectedMessage()
+                }
             }
         }
 
         return binding.root
     }
 
-    private fun openFile(resultLauncher: ActivityResultLauncher<Intent>, pickerInitialUri: Uri?) {
+    private fun onChooseDeck() {
+        lifecycleScope.launch {
+            viewModel.getAllDecks().collectLatest {
+
+                val deckNames = it.map { deck -> deck.name }
+                val deckNamesArray = deckNames.toTypedArray() + arrayOf(getString(R.string.create_new_deck))
+
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.choose_deck)
+                    .setItems(deckNamesArray) { _, which ->
+                        if (which < it.size) viewModel.chooseDeck(it[which])
+                        else createANewDeck()
+                    }
+                    .setCancelable(true)
+                    .show()
+            }
+        }
+    }
+
+    private fun createANewDeck() {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_create_new_deck, null)
+        val deckName = dialogView.findViewById<EditText>(R.id.name)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.create_new_deck)
+            .setView(dialogView)
+            .setPositiveButton(R.string.ok) { _, _ -> viewModel.saveDeck(deckName.text.toString()) }
+            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            .setCancelable(true)
+            .show()
+    }
+
+    private fun openFile(resultLauncher: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "text/*"
             //putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(""))
-
-            // Optionally, specify a URI for the file that should appear in the
-            // system file picker when it loads.
-            //putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
         }
         resultLauncher.launch(intent)
     }
@@ -116,5 +150,17 @@ class ImportFragment : Fragment() {
             .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
             .setCancelable(true)
             .show()
+    }
+
+    private fun showNoFileSelectedMessage() {
+        Toast.makeText(requireContext(), R.string.no_file, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showBadFileMessage() {
+        Toast.makeText(requireContext(), R.string.no_file, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showNoDeckSelectedMessage() {
+        Toast.makeText(requireContext(), R.string.no_deck, Toast.LENGTH_SHORT).show()
     }
 }

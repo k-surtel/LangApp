@@ -28,9 +28,15 @@
     <string name="new_line">New line</string>
     <string name="separator_character">separator character:</string>
     <string name="time_label">Time spent learning:</string>
-    <string name="first_term_is">First term is:</string>
+    <string name="first_term_is">First term is</string>
     <string name="terms_separator">Terms separator</string>
     <string name="example">Example:</string>
     <string name="ok">OK</string>
     <string name="char_field_is_empty">Char field is empty</string>
+    <string name="import_into">Import into</string>
+    <string name="choose_deck">Choose deck</string>
+    <string name="create_new_deck">Create a new deck</string>
+    <string name="no_file">Please choose a file</string>
+    <string name="bad_file">Please select a different file. Supported file types: TXT</string>
+    <string name="no_deck">Please select a deck</string>
 </resources>
