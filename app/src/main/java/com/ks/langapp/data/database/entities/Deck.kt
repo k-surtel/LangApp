@@ -11,5 +11,9 @@ data class Deck (
 
     @ColumnInfo var name: String,
 
-    @ColumnInfo var cardsCount: Int = 0
+    @ColumnInfo var cardsCount: Int = 0,
+
+    @ColumnInfo var frontLanguage: String? = null,
+
+    @ColumnInfo var backLanguage: String? = null
 )

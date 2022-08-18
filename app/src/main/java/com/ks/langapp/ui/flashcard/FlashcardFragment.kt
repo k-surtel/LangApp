@@ -1,6 +1,7 @@
 package com.ks.langapp.ui.flashcard
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ks.langapp.R
 import com.ks.langapp.databinding.FragmentFlashcardBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class FlashcardFragment : Fragment() {
@@ -30,6 +32,9 @@ class FlashcardFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+//        val tts = TextToSpeech(requireContext())
+//        binding.testButton.setOnClickListener { tts.speak("Go die in a war") }
+
         return binding.root
     }
 
@@ -38,13 +43,13 @@ class FlashcardFragment : Fragment() {
 
         viewModel.saveStats()
 
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("ehe")
-            .setMessage("viewModel.learningTime.toString()")
-            .setNeutralButton("oii") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setCancelable(true)
-            .show()
+//        MaterialAlertDialogBuilder(requireContext())
+//            .setTitle("ehe")
+//            .setMessage("viewModel.learningTime.toString()")
+//            .setNeutralButton("oii") { dialog, _ ->
+//                dialog.dismiss()
+//            }
+//            .setCancelable(true)
+//            .show()
     }
 }

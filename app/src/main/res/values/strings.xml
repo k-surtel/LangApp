@@ -39,4 +39,5 @@
     <string name="no_file">Please choose a file</string>
     <string name="bad_file">Please select a different file. Supported file types: TXT</string>
     <string name="no_deck">Please select a deck</string>
+    <string name="listen">Listen</string>
 </resources>

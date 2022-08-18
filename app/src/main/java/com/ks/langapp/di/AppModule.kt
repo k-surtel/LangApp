@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.ks.langapp.data.database.LangDatabase
 import com.ks.langapp.data.repository.LangRepository
 import com.ks.langapp.data.repository.LangRepositoryImpl
+import com.ks.langapp.ui.flashcard.TextToSpeech
 import com.ks.langapp.ui.utils.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -40,4 +41,10 @@ object AppModule {
     fun provideResourceProvider(
         @ApplicationContext context: Context
     ): ResourceProvider = ResourceProvider(context)
+
+    @Provides
+    @Singleton
+    fun provideTextToSpeech(
+        @ApplicationContext context: Context
+    ): TextToSpeech = TextToSpeech(context)
 }

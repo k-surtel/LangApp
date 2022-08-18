@@ -19,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FlashcardViewModel @Inject constructor(
-    private val repository: LangRepository
+    private val repository: LangRepository,
+    private val textToSpeech: TextToSpeech
     ) : ViewModel() {
 
     private var cardsReviewed: Int = 0
@@ -38,9 +39,23 @@ class FlashcardViewModel @Inject constructor(
 
     private var startTime = System.currentTimeMillis()
 
-    private lateinit var cardStats: MutableList<CardStats>
+    private var cardStats = mutableListOf<CardStats>()
 
     //todo save deck only if at least one reviewed
+    // todo remove stats showing
+
+    val currentEaseScore = MutableStateFlow(0)
+    val currentTimesReviewed = MutableStateFlow(0)
+    var divided = MutableStateFlow(0F)
+
+    private fun tempFun() {
+        val cardStat = cardStats.find { it.cardId == currentCard.value?.cardId }
+        cardStat?.let {
+            currentEaseScore.value = it.easeScore
+            currentTimesReviewed.value = it.timesReviewed
+            divided.value = currentEaseScore.value.toFloat() / currentTimesReviewed.value
+        }
+    }
 
     fun processArguments(deckId: Long) {
         if(deckId != Long.MIN_VALUE) {
@@ -65,12 +80,17 @@ class FlashcardViewModel @Inject constructor(
         viewModelScope.launch {
             if (shouldDelay) delay(610)
             _currentCard.value = cards.value[_currentIndex.value]
+            tempFun() /////////////////////////////////////////////////////////////todo
         }
     }
 
     fun onCardClicked() {
         if (_backVisibility.value == View.GONE) _backVisibility.value = View.VISIBLE
         else _backVisibility.value = View.GONE
+    }
+
+    fun onListenClick() {
+        currentCard.value?.let { textToSpeech.speak(it.back) }
     }
 
     fun onWrongClick() {

@@ -11,7 +11,7 @@ import com.ks.langapp.data.utils.Converters
 
 @Database(
     entities = [Card::class, CardStats::class, Deck::class, DeckStats::class],
-    version = 15,
+    version = 16,
     exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class LangDatabase : RoomDatabase() {
