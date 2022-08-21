@@ -8,6 +8,7 @@ import com.ks.langapp.data.database.entities.Card
 import com.ks.langapp.data.database.entities.CardStats
 import com.ks.langapp.data.database.entities.DeckStats
 import com.ks.langapp.data.repository.LangRepository
+import com.ks.langapp.data.utils.TextToSpeech
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,7 +63,6 @@ class FlashcardViewModel @Inject constructor(
             viewModelScope.launch {
                 repository.getCardsOfADeck(deckId).collectLatest {
                     _cards.value = it.shuffled()
-
                     _currentIndex.value = 0
                     setFlashcard()
                     }
@@ -70,6 +70,11 @@ class FlashcardViewModel @Inject constructor(
 
             viewModelScope.launch {
                 cardStats = repository.getCardStatsOfADeck(deckId).toMutableList()
+            }
+
+            viewModelScope.launch {
+                val deck = repository.getDeck(deckId)
+                deck?.backLanguage?.let { textToSpeech.setLanguage(it) }
             }
         }
     }

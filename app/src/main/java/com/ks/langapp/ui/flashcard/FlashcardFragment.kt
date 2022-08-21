@@ -32,9 +32,6 @@ class FlashcardFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-//        val tts = TextToSpeech(requireContext())
-//        binding.testButton.setOnClickListener { tts.speak("Go die in a war") }
-
         return binding.root
     }
 
