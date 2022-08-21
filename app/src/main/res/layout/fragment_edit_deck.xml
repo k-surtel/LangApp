@@ -33,6 +33,45 @@
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/front_language_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/front_language_optional"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/icon_clear"
+            app:endIconContentDescription="@string/clear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deck_name_layout">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/front_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                textMapLanguage="@{viewModel.deck.frontLanguage}"
+                android:focusable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/back_language_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/back_language_optional"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/icon_clear"
+            app:endIconContentDescription="@string/clear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/front_language_layout">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/back_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                textMapLanguage="@{viewModel.deck.backLanguage}"
+                android:focusable="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <Button
             android:id="@+id/button_delete"
             android:text="@string/delete"

@@ -4,10 +4,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.google.android.material.textfield.TextInputEditText
 import com.ks.langapp.R
 import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.ui.importcards.ImportViewModel
 import com.ks.langapp.ui.importcards.ImportViewModel.*
+import java.util.*
 
 @BindingAdapter("setVisibility")
 fun setVisibility(view : View, visible : Boolean) {
@@ -37,4 +39,11 @@ fun otherTermText(view : View, term : Term) {
 @BindingAdapter("deckButtonText")
 fun deckButtonText(view : View, deck: Deck?) {
     (view as Button).text = deck?.name ?: view.resources.getText(R.string.choose_deck)
+}
+
+@BindingAdapter("textMapLanguage")
+fun textMapLanguage(view : View, language: String?) {
+    language?.let {
+        (view as TextInputEditText).setText(Locale(language).displayLanguage)
+    }
 }
