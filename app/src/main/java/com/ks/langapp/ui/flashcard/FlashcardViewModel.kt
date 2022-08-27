@@ -1,6 +1,5 @@
 package com.ks.langapp.ui.flashcard
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,22 +41,6 @@ class FlashcardViewModel @Inject constructor(
 
     private var cardStats = mutableListOf<CardStats>()
 
-    //todo save deck only if at least one reviewed
-    // todo remove stats showing
-
-    val currentEaseScore = MutableStateFlow(0)
-    val currentTimesReviewed = MutableStateFlow(0)
-    var divided = MutableStateFlow(0F)
-
-    private fun tempFun() {
-        val cardStat = cardStats.find { it.cardId == currentCard.value?.cardId }
-        cardStat?.let {
-            currentEaseScore.value = it.easeScore
-            currentTimesReviewed.value = it.timesReviewed
-            divided.value = currentEaseScore.value.toFloat() / currentTimesReviewed.value
-        }
-    }
-
     fun processArguments(deckId: Long) {
         if(deckId != Long.MIN_VALUE) {
             viewModelScope.launch {
@@ -85,7 +68,6 @@ class FlashcardViewModel @Inject constructor(
         viewModelScope.launch {
             if (shouldDelay) delay(610)
             _currentCard.value = cards.value[_currentIndex.value]
-            tempFun() /////////////////////////////////////////////////////////////todo
         }
     }
 
@@ -139,12 +121,6 @@ class FlashcardViewModel @Inject constructor(
         } else {
             cardStat.timesReviewed++
             cardStat.easeScore += ease
-        }
-
-        // todo delete later
-        for (stat in cardStats) {
-            Log.d("LANGUS", "ID: ${stat.cardId}, " +
-                    "TIMES REVIEWED: ${stat.timesReviewed}, EASE: ${stat.easeScore}")
         }
     }
 

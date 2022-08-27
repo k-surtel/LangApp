@@ -51,61 +51,6 @@
             app:layout_constraintStart_toEndOf="@id/separator"
             app:layout_constraintTop_toTopOf="parent"/>
 
-<!--        todo-->
-        <TextView
-            android:id="@+id/timesReviewedLabel"
-            android:text="Times reviewd: "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/timesReviewed"/>
-
-<!--        todo-->
-        <TextView
-            android:id="@+id/timesReviewed"
-            android:text="@{String.valueOf(viewModel.currentTimesReviewed)}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-<!--        todo-->
-        <TextView
-            android:id="@+id/easeScoreLabel"
-            android:text="Ease: "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/easeScore"/>
-
-<!--        todo-->
-        <TextView
-            android:id="@+id/easeScore"
-            android:text="@{String.valueOf(viewModel.currentEaseScore)}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/timesReviewedLabel"/>
-
-<!--        todo-->
-        <TextView
-            android:id="@+id/dividedLabel"
-            android:text="Divided: "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/easeScore"
-            app:layout_constraintEnd_toStartOf="@id/divided"/>
-
-<!--        todo-->
-        <TextView
-            android:id="@+id/divided"
-            android:text="@{String.valueOf(viewModel.divided)}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/easeScore"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/flashcard"
             android:layout_width="match_parent"
