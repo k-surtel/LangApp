@@ -165,4 +165,14 @@ class FlashcardViewModel @Inject constructor(
             ))
         }
     }
+
+    fun saveCard(front: String, back: String) = viewModelScope.launch {
+        currentCard.value?.let {
+            if (it.front != front || it.back != back)
+                repository.saveCard(it.copy(
+                    front = front,
+                    back = back
+                ))
+        }
+    }
 }
