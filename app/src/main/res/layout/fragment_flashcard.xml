@@ -27,7 +27,7 @@
         <TextView
             android:id="@+id/cards_left"
             android:layout_width="wrap_content"
-            android:text="@{String.valueOf(viewModel.cards.size() - viewModel.currentIndex)}"
+            android:text="@{String.valueOf(viewModel.cards.size() - viewModel.cardsReviewed)}"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             app:layout_constraintStart_toEndOf="@id/cards_left_label"

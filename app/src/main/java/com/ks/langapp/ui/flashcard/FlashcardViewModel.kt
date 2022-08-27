@@ -1,5 +1,6 @@
 package com.ks.langapp.ui.flashcard
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,9 +11,7 @@ import com.ks.langapp.data.repository.LangRepository
 import com.ks.langapp.data.utils.TextToSpeech
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -21,35 +20,38 @@ import javax.inject.Inject
 class FlashcardViewModel @Inject constructor(
     private val repository: LangRepository,
     private val textToSpeech: TextToSpeech
-    ) : ViewModel() {
+) : ViewModel() {
 
-    private var cardsReviewed: Int = 0
+    private val _event = MutableSharedFlow<FlashcardEvent>()
+    val event: SharedFlow<FlashcardEvent> = _event
 
-    private val  _cards = MutableStateFlow<List<Card>>(listOf())
+    private val _cards = MutableStateFlow<List<Card>>(listOf())
     val cards: StateFlow<List<Card>> = _cards
 
-    private val _backVisibility = MutableStateFlow(View.GONE)
-    val backVisibility: StateFlow<Int> = _backVisibility
+    private var cardsOrder = mutableListOf<Int>()
 
-    private var _currentIndex = MutableStateFlow(0)
-    val currentIndex: StateFlow<Int> = _currentIndex
+    private var _cardsReviewed = MutableStateFlow(0)
+    var cardsReviewed: StateFlow<Int> = _cardsReviewed
 
     private val _currentCard = MutableStateFlow<Card?>(null)
     val currentCard: StateFlow<Card?> = _currentCard
+
+    private val _backVisibility = MutableStateFlow(View.GONE)
+    val backVisibility: StateFlow<Int> = _backVisibility
 
     private var startTime = System.currentTimeMillis()
 
     private var cardStats = mutableListOf<CardStats>()
 
+
     fun processArguments(deckId: Long) {
-        if(deckId != Long.MIN_VALUE) {
+        if (deckId != Long.MIN_VALUE) {
             viewModelScope.launch {
                 repository.getCardsOfADeck(deckId).collectLatest {
-                    _cards.value = it.shuffled()
-                    _currentIndex.value = 0
-                    setFlashcard()
-                    }
+                    _cards.value = it
+                    shuffleCardsOrder(it.size)
                 }
+            }
 
             viewModelScope.launch {
                 cardStats = repository.getCardStatsOfADeck(deckId).toMutableList()
@@ -62,12 +64,21 @@ class FlashcardViewModel @Inject constructor(
         }
     }
 
+    private fun shuffleCardsOrder(numberOfCards: Int) {
+        if (cardsOrder.isEmpty()) {
+            cardsOrder = (0 until numberOfCards).toMutableList()
+            cardsOrder.shuffle()
+        }
+        setFlashcard()
+    }
+
+
     private fun setFlashcard() {
         val shouldDelay = backVisibility.value == View.VISIBLE
         if (shouldDelay) _backVisibility.value = View.GONE
         viewModelScope.launch {
             if (shouldDelay) delay(610)
-            _currentCard.value = cards.value[_currentIndex.value]
+            _currentCard.value = cards.value[cardsOrder[cardsReviewed.value]]
         }
     }
 
@@ -82,45 +93,41 @@ class FlashcardViewModel @Inject constructor(
 
     fun onWrongClick() {
         setCurrentCardStats(0)
-        if(cards.value.size > _currentIndex.value + 1) _currentIndex.value++
-        else {
-            _currentIndex.value = 0
-            _cards.value = _cards.value.shuffled()
-        }
-        setFlashcard()
+        onNextFlashcard()
     }
 
     fun onRightClick() {
         setCurrentCardStats(1)
-        if(cards.value.size > _currentIndex.value + 1) _currentIndex.value++
-        else {
-            _currentIndex.value = 0
-            _cards.value = _cards.value.shuffled()
-        }
-        setFlashcard()
+        onNextFlashcard()
     }
 
     fun onEasyClick() {
         setCurrentCardStats(5)
-        if(cards.value.size > _currentIndex.value + 1) _currentIndex.value++
-        else {
-            _currentIndex.value = 0
-            _cards.value = _cards.value.shuffled()
-        }
-        setFlashcard()
+        onNextFlashcard()
     }
 
     private fun setCurrentCardStats(ease: Int) {
-        cardsReviewed++
+        _cardsReviewed.value++
 
-        var cardStat = cardStats.find { it.cardId == currentCard.value!!.cardId }
+        val cardStat = cardStats.find { it.cardId == currentCard.value!!.cardId }
 
         if (cardStat == null) {
-            cardStats.add(CardStats(currentCard.value!!.cardId,
-                currentCard.value!!.deckId, 1, ease))
+            cardStats.add(
+                CardStats(
+                    currentCard.value!!.cardId,
+                    currentCard.value!!.deckId, 1, ease
+                )
+            )
         } else {
             cardStat.timesReviewed++
             cardStat.easeScore += ease
+        }
+    }
+
+    private fun onNextFlashcard() {
+        if (cardsReviewed.value < cards.value.size) setFlashcard()
+        else {
+            viewModelScope.launch { _event.emit(FlashcardEvent.NAVIGATE_BACK) }
         }
     }
 
@@ -132,23 +139,31 @@ class FlashcardViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            repository.saveDeckStats(DeckStats(
-                0,
-                currentCard.value!!.deckId,
-                Calendar.getInstance().time,
-                timeDifference,
-                cardsReviewed
-            ))
+            repository.saveDeckStats(
+                DeckStats(
+                    0,
+                    currentCard.value!!.deckId,
+                    Calendar.getInstance().time,
+                    timeDifference,
+                    cardsReviewed.value
+                )
+            )
         }
     }
 
     fun saveCard(front: String, back: String) = viewModelScope.launch {
         currentCard.value?.let {
             if (it.front != front || it.back != back)
-                repository.saveCard(it.copy(
-                    front = front,
-                    back = back
-                ))
+                repository.saveCard(
+                    it.copy(
+                        front = front,
+                        back = back
+                    )
+                )
         }
+    }
+
+    enum class FlashcardEvent {
+        NAVIGATE_BACK
     }
 }

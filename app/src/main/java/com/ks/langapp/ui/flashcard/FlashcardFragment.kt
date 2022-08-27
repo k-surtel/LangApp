@@ -10,10 +10,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ks.langapp.R
 import com.ks.langapp.databinding.FragmentFlashcardBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -38,11 +42,16 @@ class FlashcardFragment : Fragment() {
 
         binding.editButton.setOnClickListener { editCard() }
 
+        lifecycleScope.launch {
+            viewModel.event.collectLatest { findNavController().popBackStack() }
+        }
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d("LANGUS", "destroying flashcards fragment")
 
         viewModel.saveStats()
 
