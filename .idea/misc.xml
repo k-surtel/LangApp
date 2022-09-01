@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2015" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_add.xml" value="0.113" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_clear.xml" value="0.113" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_edit.xml" value="0.1165" />
@@ -10,6 +11,7 @@
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_listen.xml" value="0.178" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/icon_settings.xml" value="0.178" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/drawable/shape_fab_label.xml" value="0.144" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/dialog_choose_cards_separator.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/dialog_choose_separator.xml" value="0.20199275362318841" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/dialog_create_new_deck.xml" value="0.20199275362318841" />
@@ -27,6 +29,10 @@
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/fragment_stats.xml" value="0.20199275362318841" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/item_card.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/item_deck.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/layout/nav_header_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/menu/drawer_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/menu/main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/menu/menu_toolbar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/K/Desktop/LANG/LangApp/app/src/main/res/menu/menu_toolbar2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/K/Desktop/LangApp/app/src/main/res/layout/fragment_cards.xml" value="0.17831813576494426" />

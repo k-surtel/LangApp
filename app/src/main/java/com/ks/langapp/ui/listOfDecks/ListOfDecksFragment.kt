@@ -95,8 +95,6 @@ class ListOfDecksFragment : Fragment() {
 
                 2 -> navigate(ListOfDecksFragmentDirections
                     .actionListOfDecksFragmentToEditDeckFragment(deck.deckId, false))
-
-                3 -> navigate(ListOfDecksFragmentDirections.actionListOfDecksFragmentToStatsFragment())
             }
         }
         val dialog = builder.create()

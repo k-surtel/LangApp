@@ -45,4 +45,6 @@
     <string name="choose_language">Choose language</string>
     <string name="clear">Clear</string>
     <string name="edit_card">Edit card</string>
+    <string name="statistics">Statistics</string>
+    <string name="home">Home</string>
 </resources>
