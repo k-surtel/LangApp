@@ -51,6 +51,41 @@
             app:layout_constraintStart_toEndOf="@id/separator"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <TextView
+            android:id="@+id/times_reviewed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/times_reviewed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cards_left_label"/>
+
+        <TextView
+            android:id="@+id/times_reviewed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(viewModel.currentStats.timesReviewed)}"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/times_reviewed_label"
+            app:layout_constraintTop_toBottomOf="@id/cards_left_label"/>
+
+        <TextView
+            android:id="@+id/ease_score_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ease_score"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/times_reviewed"
+            app:layout_constraintTop_toBottomOf="@id/cards_left_label"/>
+
+        <TextView
+            android:id="@+id/ease_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(viewModel.currentStats.easeScore)}"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/ease_score_label"
+            app:layout_constraintTop_toBottomOf="@id/cards_left_label"/>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/flashcard"
             android:layout_width="match_parent"
@@ -63,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cards_left_label">
+            app:layout_constraintTop_toBottomOf="@id/times_reviewed_label">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

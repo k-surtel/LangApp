@@ -39,6 +39,9 @@ class FlashcardViewModel @Inject constructor(
     private val _backVisibility = MutableStateFlow(View.GONE)
     val backVisibility: StateFlow<Int> = _backVisibility
 
+    private val _currentStats = MutableStateFlow<CardStats?>(null)
+    val currentStats: StateFlow<CardStats?> = _currentStats
+
     private var startTime = System.currentTimeMillis()
 
     private var cardStats = mutableListOf<CardStats>()
@@ -79,6 +82,7 @@ class FlashcardViewModel @Inject constructor(
         viewModelScope.launch {
             if (shouldDelay) delay(610)
             _currentCard.value = cards.value[cardsOrder[cardsReviewed.value]]
+            _currentStats.value = cardStats.find { it.cardId == _currentCard.value!!.cardId }
         }
     }
 
