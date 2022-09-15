@@ -47,4 +47,6 @@
     <string name="edit_card">Edit card</string>
     <string name="statistics">Statistics</string>
     <string name="home">Home</string>
+    <string name="times_reviewed">Times reviewed:</string>
+    <string name="ease_score">Ease score:</string>
 </resources>

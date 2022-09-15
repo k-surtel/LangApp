@@ -40,11 +40,14 @@ class DeckFragment : Fragment() {
                     .actionDeckFragmentToEditCardFragment(it.deckId, card.cardId))
             }
         })
+
         lifecycleScope.launch { viewModel.cards.collectLatest {
             if (viewModel.deck.value!= null && it.size != viewModel.deck.value!!.cardsCount)
                 viewModel.checkForUpdates(it)
+            adapter.submitStats(viewModel.cardStats)
             adapter.submitList(it)
         } }
+
         binding.cards.adapter = adapter
 
         binding.editButton.setOnClickListener {

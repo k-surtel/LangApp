@@ -2,6 +2,7 @@ package com.ks.langapp.ui.deck
 
 import androidx.lifecycle.*
 import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.database.entities.CardStats
 import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.data.repository.LangRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ class DeckViewModel @Inject constructor(
     val deck: StateFlow<Deck?> = _deck
 
     lateinit var cards: Flow<List<Card>>
+    lateinit var cardStats: List<CardStats>
 
     var editedCard: Card? = null
 
@@ -29,6 +31,10 @@ class DeckViewModel @Inject constructor(
 
         viewModelScope.launch {
             _deck.value = repository.getDeck(deckId)
+        }
+
+        viewModelScope.launch {
+            cardStats = repository.getCardStatsOfADeck(deckId)
         }
     }
 

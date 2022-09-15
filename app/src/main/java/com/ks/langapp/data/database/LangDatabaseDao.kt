@@ -44,7 +44,7 @@ interface LangDatabaseDao {
     fun getAllDecks(): Flow<List<Deck>>
 
     @Query("SELECT * FROM table_card_stats WHERE deckId = :key ")
-     suspend fun getCardStatsOfADeck(key: Long): List<CardStats>
+    suspend fun getCardStatsOfADeck(key: Long): List<CardStats>
 
     @Insert(onConflict = REPLACE)
     suspend fun insertCardStatsList(cardStats: List<CardStats>)

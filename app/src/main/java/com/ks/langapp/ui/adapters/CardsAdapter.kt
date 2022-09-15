@@ -7,24 +7,33 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ks.langapp.data.database.entities.Card
+import com.ks.langapp.data.database.entities.CardStats
 import com.ks.langapp.databinding.ItemCardBinding
 
-class CardsAdapter(private val clickListener: CardsListener) :
-    ListAdapter<Card, CardsAdapter.ViewHolder>(ItemsDiffCallback()) {
+class CardsAdapter(
+    private val clickListener: CardsListener
+    ) : ListAdapter<Card, CardsAdapter.ViewHolder>(ItemsDiffCallback()) {
+
+    private var cardStats = listOf<CardStats>()
+
+    fun submitStats(cardStats: List<CardStats>) {
+        this.cardStats = cardStats
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        val stats = cardStats.find { it.cardId == getItem(position).cardId }
+        holder.bind(getItem(position), clickListener, stats)
     }
 
     class ViewHolder private constructor(private val binding: ItemCardBinding)
         : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(card: Card, clickListener: CardsListener) {
+        fun bind(card: Card, clickListener: CardsListener, cardStats: CardStats?) {
             binding.card = card
+            binding.cardStats = cardStats
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
