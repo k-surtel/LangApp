@@ -52,18 +52,20 @@ class FlashcardFragment : Fragment() {
         super.onDestroyView()
         val reviewStats = viewModel.saveStats()
 
-        MaterialAlertDialogBuilder(requireContext()) //todo
-            .setTitle(R.string.well_done)
-            .setMessage(getString(
-                R.string.review_stats,
-                reviewStats.cardsReviewed,
-                convertTimeFromTimestamp(reviewStats.time)
-            ))
-            .setPositiveButton(R.string.ok) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setCancelable(true)
-            .show()
+        reviewStats?.let {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.well_done)
+                .setMessage(getString(
+                    R.string.review_stats,
+                    it.cardsReviewed,
+                    convertTimeFromTimestamp(it.time)
+                ))
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setCancelable(true)
+                .show()
+        }
     }
 
     private fun editCard() {

@@ -10,5 +10,9 @@ fun convertTimeFromTimestamp(timestamp: Long): String {
     val mm = floor(ss / 60)
     if (mm > 0) ss -= (mm * 60)
 
-    return "${hh.toInt()}:${mm.toInt()}:${ss.toInt()}"
+    val h = if (hh < 10) "0${hh.toInt()}" else hh.toInt().toString()
+    val m = if (mm < 10) "0${mm.toInt()}" else mm.toInt().toString()
+    val s = if (ss < 10) "0${ss.toInt()}" else ss.toInt().toString()
+
+    return "$h:$m:$s"
 }

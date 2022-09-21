@@ -135,7 +135,9 @@ class FlashcardViewModel @Inject constructor(
         }
     }
 
-    fun saveStats(): DeckStats {
+    fun saveStats(): DeckStats? {
+        if (cardsReviewed.value == 0) return null
+
         val timeDifference = System.currentTimeMillis() - startTime
 
         viewModelScope.launch {
