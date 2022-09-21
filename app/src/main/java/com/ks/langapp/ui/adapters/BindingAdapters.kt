@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputEditText
 import com.ks.langapp.R
+import com.ks.langapp.data.database.entities.CardStats
 import com.ks.langapp.data.database.entities.Deck
 import com.ks.langapp.ui.importcards.ImportViewModel
 import com.ks.langapp.ui.importcards.ImportViewModel.*
@@ -46,4 +47,10 @@ fun textMapLanguage(view : View, language: String?) {
     language?.let {
         (view as TextInputEditText).setText(Locale(language).displayLanguage)
     }
+}
+
+@BindingAdapter("dividedStatsResult")
+fun dividedStatsResult(view : View, cardStats: CardStats?) {
+    val divided = if (cardStats != null) cardStats.easeScore.toFloat() / cardStats.timesReviewed else 0
+    (view as TextView).text = divided.toString()
 }

@@ -1,7 +1,6 @@
 package com.ks.langapp.ui.flashcard
 
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,10 +14,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ks.langapp.R
 import com.ks.langapp.databinding.FragmentFlashcardBinding
+import com.ks.langapp.ui.utils.convertTimeFromTimestamp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class FlashcardFragment : Fragment() {
@@ -51,18 +50,20 @@ class FlashcardFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("LANGUS", "destroying flashcards fragment")
+        val reviewStats = viewModel.saveStats()
 
-        viewModel.saveStats()
-
-//        MaterialAlertDialogBuilder(requireContext())
-//            .setTitle("ehe")
-//            .setMessage("viewModel.learningTime.toString()")
-//            .setNeutralButton("oii") { dialog, _ ->
-//                dialog.dismiss()
-//            }
-//            .setCancelable(true)
-//            .show()
+        MaterialAlertDialogBuilder(requireContext()) //todo
+            .setTitle(R.string.well_done)
+            .setMessage(getString(
+                R.string.review_stats,
+                reviewStats.cardsReviewed,
+                convertTimeFromTimestamp(reviewStats.time)
+            ))
+            .setPositiveButton(R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(true)
+            .show()
     }
 
     private fun editCard() {

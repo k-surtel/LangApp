@@ -135,24 +135,26 @@ class FlashcardViewModel @Inject constructor(
         }
     }
 
-    fun saveStats() {
+    fun saveStats(): DeckStats {
         val timeDifference = System.currentTimeMillis() - startTime
 
         viewModelScope.launch {
             repository.saveCardStatsList(cardStats)
         }
 
+        val deckStats = DeckStats(
+            0,
+            currentCard.value!!.deckId,
+            Calendar.getInstance().time,
+            timeDifference,
+            cardsReviewed.value
+        )
+
         viewModelScope.launch {
-            repository.saveDeckStats(
-                DeckStats(
-                    0,
-                    currentCard.value!!.deckId,
-                    Calendar.getInstance().time,
-                    timeDifference,
-                    cardsReviewed.value
-                )
-            )
+            repository.saveDeckStats(deckStats)
         }
+
+        return deckStats
     }
 
     fun saveCard(front: String, back: String) = viewModelScope.launch {

@@ -86,6 +86,24 @@
             app:layout_constraintStart_toEndOf="@id/ease_score_label"
             app:layout_constraintTop_toBottomOf="@id/cards_left_label"/>
 
+        <TextView
+            android:id="@+id/divided_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Divided: "
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/ease_score"
+            app:layout_constraintTop_toBottomOf="@id/cards_left_label"/>
+
+        <TextView
+            android:id="@+id/divided"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            dividedStatsResult="@{viewModel.currentStats}"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@id/divided_label"
+            app:layout_constraintTop_toBottomOf="@id/cards_left_label"/>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/flashcard"
             android:layout_width="match_parent"
