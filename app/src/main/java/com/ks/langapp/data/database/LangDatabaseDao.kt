@@ -22,6 +22,12 @@ interface LangDatabaseDao {
     @Query("DELETE FROM table_cards WHERE deckId = :key")
     suspend fun deleteCardsOfADeck(key: Long)
 
+    @Query("DELETE FROM table_card_stats WHERE deckId = :key")
+    suspend fun deleteCardStatsOfADeck(key: Long)
+
+    @Query("DELETE FROM table_deck_stats WHERE deckId = :key")
+    suspend fun deleteDeckStatsOfADeck(key: Long)
+
     @Insert(onConflict = REPLACE)
     suspend fun insert(deck: Deck): Long
 

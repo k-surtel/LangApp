@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListOfDecksViewModel @Inject constructor(
-    private val repository: LangRepository
+    repository: LangRepository
     ) : ViewModel() {
 
     val decks = repository.getAllDecks()

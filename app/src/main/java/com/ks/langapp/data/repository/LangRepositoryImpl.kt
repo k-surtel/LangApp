@@ -20,6 +20,8 @@ class LangRepositoryImpl(
 
     override suspend fun deleteDeck(deck: Deck) {
         dao.deleteCardsOfADeck(deck.deckId)
+        dao.deleteCardStatsOfADeck(deck.deckId)
+        dao.deleteDeckStatsOfADeck(deck.deckId)
         dao.deleteDeck(deck.deckId)
     }
 
@@ -36,21 +38,9 @@ class LangRepositoryImpl(
     }
 
     override suspend fun deleteCard(card: Card) {
-        //dao.deleteCard(card.cardId)
         setupCardRetention(card)
         deleteCardFromDb(card.cardId)
         deleteCardStatsFromDb(card.cardId)
-    }
-
-    override suspend fun undoCardDeletion() {
-        tempCard?.let { card ->
-            dao.insert(card)
-            tempCardStats?.let {
-                dao.insert(it)
-                tempCardStats = null
-            }
-            tempCard = null
-        }
     }
 
     private suspend fun setupCardRetention(card: Card) {
@@ -64,6 +54,17 @@ class LangRepositoryImpl(
 
     private suspend fun deleteCardStatsFromDb(cardId: Long) {
         dao.deleteCardStats(cardId)
+    }
+
+    override suspend fun undoCardDeletion() {
+        tempCard?.let { card ->
+            dao.insert(card)
+            tempCardStats?.let {
+                dao.insert(it)
+                tempCardStats = null
+            }
+            tempCard = null
+        }
     }
 
     override suspend fun getCard(cardId: Long): Card? {
