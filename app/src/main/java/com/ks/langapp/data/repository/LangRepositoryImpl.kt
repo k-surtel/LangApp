@@ -11,6 +11,9 @@ class LangRepositoryImpl(
     private val dao: LangDatabaseDao
 ) : LangRepository {
 
+    private var tempCard: Card? = null
+    private var tempCardStats: CardStats? = null
+
     override suspend fun saveDeck(deck: Deck): Long {
         return dao.insert(deck)
     }
@@ -33,7 +36,34 @@ class LangRepositoryImpl(
     }
 
     override suspend fun deleteCard(card: Card) {
-        dao.deleteCard(card.cardId)
+        //dao.deleteCard(card.cardId)
+        setupCardRetention(card)
+        deleteCardFromDb(card.cardId)
+        deleteCardStatsFromDb(card.cardId)
+    }
+
+    override suspend fun undoCardDeletion() {
+        tempCard?.let { card ->
+            dao.insert(card)
+            tempCardStats?.let {
+                dao.insert(it)
+                tempCardStats = null
+            }
+            tempCard = null
+        }
+    }
+
+    private suspend fun setupCardRetention(card: Card) {
+        tempCard = card
+        tempCardStats = dao.getCardStats(card.cardId)
+    }
+
+    private suspend fun deleteCardFromDb(cardId: Long) {
+        dao.deleteCard(cardId)
+    }
+
+    private suspend fun deleteCardStatsFromDb(cardId: Long) {
+        dao.deleteCardStats(cardId)
     }
 
     override suspend fun getCard(cardId: Long): Card? {

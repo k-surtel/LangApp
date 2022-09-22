@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface LangDatabaseDao {
 
-    @Query("DELETE FROM table_decks WHERE deckId = :key ")
+    @Query("DELETE FROM table_decks WHERE deckId = :key")
     suspend fun deleteDeck(key: Long)
 
     @Insert
     suspend fun insertAll(cards: List<Card>)
 
-    @Query("DELETE FROM table_cards WHERE deckId = :key ")
+    @Query("DELETE FROM table_cards WHERE deckId = :key")
     suspend fun deleteCardsOfADeck(key: Long)
 
     @Insert(onConflict = REPLACE)
@@ -28,11 +28,14 @@ interface LangDatabaseDao {
     @Query("SELECT * from table_decks WHERE deckId = :key")
     suspend fun getDeck(key: Long): Deck?
 
-    @Query("DELETE FROM table_cards WHERE cardId = :key ")
+    @Query("DELETE FROM table_cards WHERE cardId = :key")
     suspend fun deleteCard(key: Long)
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(card: Card)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insert(cardStats: CardStats)
 
     @Query("SELECT * from table_cards WHERE cardId = :key")
     suspend fun getCard(key: Long): Card?
@@ -43,8 +46,14 @@ interface LangDatabaseDao {
     @Query("SELECT * FROM table_decks ORDER BY deckId DESC")
     fun getAllDecks(): Flow<List<Deck>>
 
-    @Query("SELECT * FROM table_card_stats WHERE deckId = :key ")
+    @Query("SELECT * FROM table_card_stats WHERE deckId = :key")
     suspend fun getCardStatsOfADeck(key: Long): List<CardStats>
+
+    @Query("SELECT * FROM table_card_stats WHERE cardId = :key")
+    suspend fun getCardStats(key: Long): CardStats?
+
+    @Query("DELETE FROM table_card_stats WHERE cardId = :key")
+    suspend fun deleteCardStats(key: Long)
 
     @Insert(onConflict = REPLACE)
     suspend fun insertCardStatsList(cardStats: List<CardStats>)

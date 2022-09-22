@@ -21,9 +21,9 @@ class DeckViewModel @Inject constructor(
     lateinit var cards: Flow<List<Card>>
     lateinit var cardStats: List<CardStats>
 
-    var editedCard: Card? = null
+    private var editedCard: Card? = null
 
-    private val _showUndoForCardDeletion = MutableSharedFlow<Card>()
+    private val _showUndoForCardDeletion = MutableSharedFlow<Boolean>()
     val showUndoForCardDeletion = _showUndoForCardDeletion.asSharedFlow()
 
     fun processArguments(deckId: Long) {
@@ -52,17 +52,19 @@ class DeckViewModel @Inject constructor(
         }
     }
 
+    fun selectEditedCard(card: Card) { editedCard = card }
+
     private fun checkIfCardDeleted(cardsList: List<Card>) {
-        if (editedCard!= null && !cardsList.contains(editedCard)) {
+        if (editedCard != null && !cardsList.contains(editedCard)) {
             viewModelScope.launch {
-                _showUndoForCardDeletion.emit(editedCard!!)
+                _showUndoForCardDeletion.emit(true)
                 editedCard = null
             }
         }
     }
 
-    fun undoCardDeletion(card: Card) = viewModelScope.launch {
-        repository.saveCard(card)
+    fun undoCardDeletion() = viewModelScope.launch {
+        repository.undoCardDeletion()
         _deck.value?.let {
             _deck.value = it.copy(cardsCount = it.cardsCount + 1)
             repository.saveDeck(_deck.value!!)

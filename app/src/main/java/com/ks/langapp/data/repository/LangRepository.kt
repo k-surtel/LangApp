@@ -20,6 +20,8 @@ interface LangRepository {
 
     suspend fun deleteCard(card: Card)
 
+    suspend fun undoCardDeletion()
+
     suspend fun getCard(cardId: Long): Card?
 
     fun getAllDecks(): Flow<List<Deck>>

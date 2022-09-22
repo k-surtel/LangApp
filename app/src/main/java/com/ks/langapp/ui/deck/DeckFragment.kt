@@ -35,7 +35,7 @@ class DeckFragment : Fragment() {
 
         val adapter = CardsAdapter(CardsListener { card ->
             viewModel.deck.value?.let {
-                viewModel.editedCard = card
+                viewModel.selectEditedCard(card)
                 navigate(DeckFragmentDirections
                     .actionDeckFragmentToEditCardFragment(it.deckId, card.cardId))
             }
@@ -67,9 +67,9 @@ class DeckFragment : Fragment() {
         }
 
         lifecycleScope.launchWhenResumed {
-            viewModel.showUndoForCardDeletion.collectLatest { card ->
+            viewModel.showUndoForCardDeletion.collectLatest {
                 Snackbar.make(requireView(), R.string.card_deleted, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.undo) { viewModel.undoCardDeletion(card) }
+                    .setAction(R.string.undo) { viewModel.undoCardDeletion() }
                     .show()
             }
         }
