@@ -85,4 +85,9 @@
         android:name="com.ks.langapp.ui.stats.StatsFragment"
         android:label="Statistics" />
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.ks.langapp.ui.settings.SettingsFragment"
+        android:label="Settings" />
+
 </navigation>
