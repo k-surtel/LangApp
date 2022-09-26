@@ -2,9 +2,7 @@ package com.ks.langapp.ui.listOfDecks
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils.loadAnimation
 import androidx.databinding.DataBindingUtil

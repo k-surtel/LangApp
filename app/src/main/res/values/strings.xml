@@ -51,4 +51,5 @@
     <string name="ease_score">Ease score:</string>
     <string name="well_done">Well done!</string>
     <string name="review_stats">Reviewed cards: %1$d \nTime: %2$s</string>
+    <string name="settings">Settings</string>
 </resources>

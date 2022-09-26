@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/listOfDecksFragment"
         android:name="com.ks.langapp.ui.listOfDecks.ListOfDecksFragment"
-        android:label="ListOfDecksFragment">
+        android:label="Decks">
         <action
             android:id="@+id/action_listOfDecksFragment_to_deckFragment"
             app:destination="@id/deckFragment" />
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/deckFragment"
         android:name="com.ks.langapp.ui.deck.DeckFragment"
-        android:label="DeckFragment">
+        android:label="Deck">
         <argument
             android:name="deckId"
             app:argType="long" />
@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/editDeckFragment"
         android:name="com.ks.langapp.ui.editdeck.EditDeckFragment"
-        android:label="EditDeckFragment">
+        android:label="Edit Deck">
         <argument
             android:name="deckId"
             app:argType="long" />
@@ -56,8 +56,8 @@
     <fragment
         android:id="@+id/editCardFragment"
         android:name="com.ks.langapp.ui.editcard.EditCardFragment"
-        android:label="EditCardFragment"
-        tools:layout="@layout/fragment_edit_card">
+        tools:layout="@layout/fragment_edit_card"
+        android:label="Edit Card">
         <argument
             android:name="deckId"
             app:argType="long" />
@@ -68,8 +68,8 @@
 
     <fragment
         android:id="@+id/flashcardFragment"
-        android:label="FlashcardFragment"
-        android:name="com.ks.langapp.ui.flashcard.FlashcardFragment">
+        android:name="com.ks.langapp.ui.flashcard.FlashcardFragment"
+        android:label="Learning">
         <argument
             android:name="deckId"
             app:argType="long" />
@@ -77,12 +77,12 @@
 
     <fragment
         android:id="@+id/importFragment"
-        android:label="ImportFragment"
-        android:name="com.ks.langapp.ui.importcards.ImportFragment" />
+        android:name="com.ks.langapp.ui.importcards.ImportFragment"
+        android:label="Import"/>
 
     <fragment
         android:id="@+id/statsFragment"
         android:name="com.ks.langapp.ui.stats.StatsFragment"
-        android:label="StatsFragment" />
+        android:label="Statistics" />
 
 </navigation>
