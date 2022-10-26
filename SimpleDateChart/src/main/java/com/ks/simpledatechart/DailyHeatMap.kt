@@ -1,4 +1,4 @@
-package com.ks.langapp.ui.stats.charts
+package com.ks.simpledatechart
 
 import android.content.Context
 import android.graphics.Canvas
@@ -86,8 +86,6 @@ class DailyHeatMap @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
         val desiredWidth = 2000
         val desiredHeight = 100
 

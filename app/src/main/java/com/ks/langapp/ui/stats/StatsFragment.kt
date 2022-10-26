@@ -2,16 +2,18 @@ package com.ks.langapp.ui.stats
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.core.view.get
+import android.widget.HorizontalScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.ks.langapp.R
 import com.ks.langapp.databinding.FragmentStatsBinding
-import com.ks.langapp.ui.stats.charts.DailyHeatMap
+import com.ks.simpledatechart.DataEntry
 import dagger.hilt.android.AndroidEntryPoint
-
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StatsFragment : Fragment() {
@@ -24,38 +26,22 @@ class StatsFragment : Fragment() {
         val binding: FragmentStatsBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_stats, container, false)
 
-//        val arguments = DeckStatsFragmentArgs.fromBundle(requireArguments())
-//        viewModel.processArguments(arguments.deckId)
-
-        //binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         viewModel.loadDeckStats()
 
-        ///////////
+        lifecycleScope.launch {
+            viewModel.deckStats.collectLatest { deckStats ->
+                val entries = mutableListOf<DataEntry>()
+                for (stat in deckStats) entries.add(DataEntry(stat.date, stat.cardsReviewed.toDouble()))
+                binding.barChart.setData(entries)
+            }
+        }
 
-
-        val barView = binding.barView
-        barView.setBottomTextList(arrayListOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"))
-        barView.setDataList(arrayListOf(1, 2, 4, 2, 6, 1, 3, 1, 7, 7, 8), 8)
-
-        //
-
-        //binding.customView.stats = listOf()
-
-//        binding.customView.setOnClickListener {
-//            Toast.makeText(requireContext(), "xD", Toast.LENGTH_SHORT).show()
-//        }
-
-//        binding.dailyHeatMapLayout.addView(DailyHeatMap(requireContext()), 600, 600)
-//
-//        binding.dailyHeatMapLayout.get(0).setOnClickListener {
-//            Toast.makeText(requireContext(), "...", Toast.LENGTH_SHORT).show()
-//        }
-
-//        binding.dailyHeatMapLayout.post {
-//            binding.dailyHeatMapLayout.fullScroll(View.FOCUS_RIGHT)
-//        }
+        lifecycleScope.launch {
+            delay(100L)
+            binding.barChartScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+        }
 
         return binding.root
     }

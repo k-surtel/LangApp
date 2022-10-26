@@ -67,8 +67,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
 
     // Charts
-    //implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'im.dacer:AndroidCharts:1.0.4'
+    implementation project(':SimpleDateChart')
 
     // Test
     testImplementation 'junit:junit:4.+'
